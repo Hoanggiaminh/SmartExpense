@@ -5,25 +5,33 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.activity.EdgeToEdge;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends BaseActivity {
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
-    LinearLayout transactionItem;
+public class MainActivity extends BaseActivity {
+    private LinearLayout transactionItem;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Check if user is signed in
+        checkUserAuthentication();
 
         initViews();
         setupClickListeners();
@@ -36,18 +44,30 @@ public class MainActivity extends BaseActivity {
         updateTabState(selectedTab);
     }
 
+    private void checkUserAuthentication() {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            // User is not signed in, redirect to LoginActivity
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+    }
+
     private void initViews() {
         transactionItem = findViewById(R.id.transactionItem);
     }
 
     private void setupClickListeners() {
-        transactionItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, TransactionDetailsActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
+        if (transactionItem != null) {
+            transactionItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, TransactionDetailsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
     }
 }
