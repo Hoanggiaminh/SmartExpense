@@ -32,6 +32,23 @@
             android:fontFamily="@font/inter_regular"
             android:layout_marginTop="16dp" />
 
+        <!-- Logout Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="56dp"
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:text="ĐĂNG XUẤT"
+            android:textColor="@color/on_primary"
+            android:textSize="16sp"
+            android:fontFamily="@font/inter"
+            android:textStyle="bold"
+            android:letterSpacing="0.1"
+            app:backgroundTint="@color/error"
+            app:cornerRadius="14dp"
+            android:layout_marginTop="16dp"
+            style="@style/Widget.Material3.Button" />
+
     </LinearLayout>
 
     <!-- Custom Bottom Navigation Bar -->
