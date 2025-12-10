@@ -1,3 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">SmartExpense</string>
+    <string name="back">Back</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="amount">Amount</string>
+    <string name="enter_amount">Please enter amount</string>
+    <string name="date">Date</string>
+    <string name="select_date">Select date</string>
+    <string name="category">Category</string>
+    <string name="note">Note</string>
+    <string name="add_note">Add a note (optional)</string>
+    <string name="add_transaction">Add Transaction</string>
+    <string name="previous_month">Previous month</string>
+    <string name="next_month">Next month</string>
+
 </resources>

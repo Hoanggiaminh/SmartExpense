@@ -10,9 +10,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class MainActivity extends BaseActivity {
 
     LinearLayout transactionItem;
+    FloatingActionButton fabAddTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,7 @@ public class MainActivity extends BaseActivity {
 
     private void initViews() {
         transactionItem = findViewById(R.id.transactionItem);
+        fabAddTransaction = findViewById(R.id.fab_add_transaction);
     }
 
     private void setupClickListeners() {
@@ -46,7 +50,14 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TransactionDetailsActivity.class);
                 startActivity(intent);
-                finish();
+            }
+        });
+
+        fabAddTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddTransactionActivity.class);
+                startActivity(intent);
             }
         });
     }
