@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
 
     <!-- Header với nút back -->
     <com.google.android.material.appbar.MaterialToolbar
@@ -13,16 +14,16 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white"
         android:elevation="0dp"
-        app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="Tài khoản &amp; Hồ sơ"
         app:titleTextColor="@color/black" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:clipToPadding="false"
+        android:paddingBottom="88dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -395,11 +396,13 @@
         </LinearLayout>
 
     </ScrollView>
-    <include
-          android:id="@+id/bottom_navigation"
-          layout="@layout/custom_bottom_navigation"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_gravity="bottom" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Custom Bottom Navigation Bar -->
+    <include
+        android:id="@+id/bottom_navigation"
+        layout="@layout/custom_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
