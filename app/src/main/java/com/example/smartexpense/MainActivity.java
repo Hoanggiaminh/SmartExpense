@@ -9,11 +9,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends BaseActivity {
     private LinearLayout transactionItem;
+    private FloatingActionButton fabAddTransaction;
     private FirebaseAuth mAuth;
 
     @Override
@@ -57,17 +59,24 @@ public class MainActivity extends BaseActivity {
 
     private void initViews() {
         transactionItem = findViewById(R.id.transactionItem);
+        fabAddTransaction = findViewById(R.id.fab_add_transaction);
     }
 
     private void setupClickListeners() {
-        if (transactionItem != null) {
-            transactionItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, TransactionDetailsActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
+        transactionItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TransactionDetailsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        fabAddTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AddTransactionActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
