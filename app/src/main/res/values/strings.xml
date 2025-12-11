@@ -14,4 +14,7 @@
     <string name="previous_month">Previous month</string>
     <string name="next_month">Next month</string>
 
+    <!-- Accessibility -->
+    <string name="transaction_category_icon_desc">Category icon</string>
+
 </resources>
