@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="@dimen/spacing_medium"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <!-- Category Icon -->
+    <LinearLayout
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:background="@drawable/ic_item_bg"
+        android:layout_marginEnd="12dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/ivCategoryIcon"
+            android:layout_width="@dimen/icon_medium"
+            android:layout_height="@dimen/icon_medium"
+            android:src="@drawable/ic_other"
+            app:tint="@color/primary" />
+    </LinearLayout>
+
+    <!-- Category Name -->
+    <TextView
+        android:id="@+id/tvCategoryName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Danh mục"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:fontFamily="@font/inter_medium"
+        android:textStyle="bold" />
+
+</LinearLayout>

@@ -8,16 +8,18 @@ public class Category {
     private String id;
     private String name;
     private String icon;
+    private String type; // "income" or "expense"
     private Timestamp createdAt;
     private Timestamp updatedAt;
 
     public Category() {
     }
 
-    public Category(String id, String name, String icon) {
+    public Category(String id, String name, String icon, String type) {
         this.id = id;
         this.name = name;
         this.icon = icon;
+        this.type = type;
         this.createdAt = Timestamp.now();
         this.updatedAt = Timestamp.now();
     }
@@ -28,6 +30,8 @@ public class Category {
     public String getName() { return name; }
 
     public String getIcon() { return icon; }
+
+    public String getType() { return type; }
 
     public Timestamp getCreatedAt() { return createdAt; }
 
@@ -40,6 +44,8 @@ public class Category {
 
     public void setIcon(String icon) { this.icon = icon; }
 
+    public void setType(String type) { this.type = type; }
+
     public void setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; }
 
     public void setUpdatedAt(Timestamp updatedAt) { this.updatedAt = updatedAt; }
@@ -50,6 +56,7 @@ public class Category {
         map.put("id", id);
         map.put("name", name);
         map.put("icon", icon);
+        map.put("type", type);
         map.put("createdAt", createdAt);
         map.put("updatedAt", updatedAt);
         return map;
