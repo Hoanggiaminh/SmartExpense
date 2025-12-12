@@ -110,13 +110,13 @@ public class TransactionDetailsActivity extends AppCompatActivity {
 
     private void loadTransactionFromFirebase() {
         if (transactionId == null) return;
-
+        
         firebaseService.getTransactionById(transactionId)
             .addOnSuccessListener(documentSnapshot -> {
                 if (documentSnapshot.exists()) {
                     // Lấy category ID từ Firebase
                     transactionCategoryId = documentSnapshot.getString("categoryId");
-
+                    
                     // Load categories và hiển thị dữ liệu
                     loadCategoriesAndDisplay();
                 } else {
@@ -134,11 +134,11 @@ public class TransactionDetailsActivity extends AppCompatActivity {
 
     private void loadCategoriesAndDisplay() {
         if (transactionType == null) return;
-
+        
         firebaseService.getCategoriesByType(transactionType)
             .addOnSuccessListener(categories -> {
                 currentCategories = categories;
-
+                
                 // Tìm category hiện tại dựa trên ID
                 selectedCategory = null;
                 for (Category category : categories) {
@@ -147,7 +147,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
                         break;
                     }
                 }
-
+                
                 // Hiển thị thông tin transaction
                 displayTransactionInfo();
             })
@@ -159,7 +159,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
 
     private void loadCategories() {
         if (transactionType == null) return;
-
+        
         firebaseService.getCategoriesByType(transactionType)
             .addOnSuccessListener(categories -> {
                 currentCategories = categories;
@@ -189,7 +189,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         // Set category icon và name
         if (selectedCategory != null) {
             tvCategory.setText(selectedCategory.getName());
-
+            
             // Set category icon
             int iconRes = getCategoryIconResource(selectedCategory.getIcon());
             ivCategoryIcon.setImageResource(iconRes);
@@ -241,7 +241,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
 
     private void displayFormattedAmount() {
         if (tvAmount == null) return;
-
+        
         String formattedAmount;
         int amountColor;
         int badgeBackground;
@@ -313,19 +313,19 @@ public class TransactionDetailsActivity extends AppCompatActivity {
 
     private void showTransactionTypeDialog() {
         String[] transactionTypes = {"Thu nhập", "Chi tiêu"};
-
+        
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Chọn loại giao dịch");
         builder.setItems(transactionTypes, (dialog, which) -> {
             String oldType = transactionType;
             transactionType = which == 0 ? "income" : "expense";
-
+            
             tvTransactionType.setText(transactionTypes[which]);
-
+            
             // Cập nhật badge và màu sắc
             displayTransactionTypeAndBadge();
             displayFormattedAmount();
-
+            
             // Nếu thay đổi type, load lại categories
             if (!transactionType.equals(oldType)) {
                 selectedCategory = null;
@@ -353,7 +353,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         builder.setItems(categoryNames, (dialog, which) -> {
             selectedCategory = currentCategories.get(which);
             tvCategory.setText(selectedCategory.getName());
-
+            
             // Cập nhật icon
             int iconRes = getCategoryIconResource(selectedCategory.getIcon());
             ivCategoryIcon.setImageResource(iconRes);
@@ -409,7 +409,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng chọn danh mục", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        
         try {
             double newAmount = Double.parseDouble(amountStr);
             if (newAmount <= 0) {
@@ -419,8 +419,8 @@ public class TransactionDetailsActivity extends AppCompatActivity {
             
             // Cập nhật transaction trong Firebase
             Timestamp timestamp = new Timestamp(transactionDateSeconds, 0);
-
-            firebaseService.updateTransaction(transactionId, newTitle, newAmount, transactionType,
+            
+            firebaseService.updateTransaction(transactionId, newTitle, newAmount, transactionType, 
                     selectedCategory.getId(), timestamp)
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "Cập nhật giao dịch thành công!", Toast.LENGTH_SHORT).show();
@@ -429,7 +429,7 @@ public class TransactionDetailsActivity extends AppCompatActivity {
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "Lỗi khi cập nhật: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
-
+            
         } catch (NumberFormatException e) {
             etAmount.setError("Số tiền không hợp lệ");
         }
@@ -453,4 +453,3 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         builder.show();
     }
 }
-

@@ -45,6 +45,10 @@
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
         <activity
+            android:name=".DayDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".CalendarActivity"/>
+        <activity
             android:name=".StatisticsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
@@ -52,6 +56,18 @@
             android:name=".ProfileActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".FinancialSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".ProfileActivity"/>
+        <activity
+            android:name=".DisplaySettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".ProfileActivity"/>
+        <activity
+            android:name=".CategoryManagementActivity"
+            android:exported="false"
+            android:parentActivityName=".FinancialSettingsActivity"/>
         <activity
             android:name=".TransactionDetailsActivity"
             android:exported="false"

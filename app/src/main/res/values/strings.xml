@@ -16,5 +16,11 @@
 
     <!-- Accessibility -->
     <string name="transaction_category_icon_desc">Category icon</string>
+    <string name="menu_more_desc">More options</string>
+    <string name="edit_desc">Edit category</string>
+
+    <!-- Sample / placeholder -->
+    <string name="sample_category_name">Groceries</string>
+    <string name="edit">Edit</string>
 
 </resources>

@@ -5,102 +5,98 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.smartexpense.R;
-import java.util.List;
 
-public class IconAdapter extends RecyclerView.Adapter<IconAdapter.IconViewHolder> {
-    private List<IconItem> icons;
+import com.example.smartexpense.R;
+
+public class IconAdapter extends RecyclerView.Adapter<IconAdapter.ViewHolder> {
+
     private Context context;
-    private int selectedPosition = 0;
+    private String[] icons;
+    private String selectedIcon;
     private OnIconSelectedListener listener;
 
     public interface OnIconSelectedListener {
-        void onIconSelected(IconItem icon);
+        void onIconSelected(String icon);
     }
 
-    public IconAdapter(Context context, List<IconItem> icons) {
+    public IconAdapter(Context context, String[] icons, String selectedIcon) {
         this.context = context;
         this.icons = icons;
+        this.selectedIcon = selectedIcon;
     }
 
     public void setOnIconSelectedListener(OnIconSelectedListener listener) {
         this.listener = listener;
     }
 
+    public void setSelectedIcon(String icon) {
+        this.selectedIcon = icon;
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
-    public IconViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_icon, parent, false);
-        return new IconViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull IconViewHolder holder, int position) {
-        IconItem icon = icons.get(position);
-        holder.bind(icon, position == selectedPosition);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        String icon = icons[position];
+
+        // Set icon
+        int iconResId = context.getResources().getIdentifier(icon, "drawable", context.getPackageName());
+        if (iconResId != 0) {
+            holder.ivIcon.setImageResource(iconResId);
+        }
+
+        // Highlight selected icon
+        if (icon.equals(selectedIcon)) {
+            holder.itemView.setBackgroundResource(R.drawable.bg_calendar_selected);
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.bg_calendar_day);
+        }
+
+        // Click listener
+        holder.itemView.setOnClickListener(v -> {
+            selectedIcon = icon;
+            notifyDataSetChanged();
+
+            if (listener != null) {
+                listener.onIconSelected(icon);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return icons.size();
+        return icons.length;
     }
 
-    public IconItem getSelectedIcon() {
-        return icons.get(selectedPosition);
-    }
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ImageView ivIcon;
 
-    class IconViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivIcon;
-        private View background;
-
-        public IconViewHolder(@NonNull View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             ivIcon = itemView.findViewById(R.id.ivIcon);
-            background = itemView.findViewById(R.id.iconBackground);
-
-            itemView.setOnClickListener(v -> {
-                int previousSelected = selectedPosition;
-                selectedPosition = getAdapterPosition();
-
-                notifyItemChanged(previousSelected);
-                notifyItemChanged(selectedPosition);
-
-                if (listener != null) {
-                    listener.onIconSelected(icons.get(selectedPosition));
-                }
-            });
-        }
-
-        public void bind(IconItem icon, boolean isSelected) {
-            ivIcon.setImageResource(icon.getResourceId());
-
-            if (isSelected) {
-                background.setBackgroundResource(R.drawable.bg_blue_rounded);
-                ivIcon.setColorFilter(context.getResources().getColor(R.color.white));
-            } else {
-                background.setBackgroundResource(0);
-                ivIcon.setColorFilter(context.getResources().getColor(R.color.text_secondary));
-            }
         }
     }
 
+    /**
+     * Simple data class to hold icon information (name and drawable resource ID)
+     */
     public static class IconItem {
-        private String name;
-        private int resourceId;
+        public final String name;
+        public final int drawableResId;
 
-        public IconItem(String name, int resourceId) {
+        public IconItem(String name, int drawableResId) {
             this.name = name;
-            this.resourceId = resourceId;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public int getResourceId() {
-            return resourceId;
+            this.drawableResId = drawableResId;
         }
     }
 }
+
