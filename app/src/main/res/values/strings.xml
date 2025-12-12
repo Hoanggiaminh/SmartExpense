@@ -23,4 +23,16 @@
     <string name="sample_category_name">Groceries</string>
     <string name="edit">Edit</string>
 
+    <!-- Statistics -->
+    <string name="statistics_title">Thống kê chi tiết</string>
+    <string name="column_chart">Biểu đồ cột</string>
+    <string name="pie_chart">Biểu đồ tròn</string>
+    <string name="balance">Số dư</string>
+    <string name="income">Thu nhập</string>
+    <string name="expense">Chi tiêu</string>
+    <string name="categories">Danh mục</string>
+    <string name="currency_symbol">đ</string>
+    <string name="previous_week">Previous week</string>
+    <string name="next_week">Next week</string>
+
 </resources>

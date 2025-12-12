@@ -1,5 +1,6 @@
 package com.example.smartexpense;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -120,7 +121,9 @@ public class StatisticsActivity extends BaseActivity {
         });
 
         btnPieChart.setOnClickListener(v -> {
-            // TODO: Implement pie chart view later
+            Intent intent = new Intent(StatisticsActivity.this, PieChartStatisticsActivity.class);
+            intent.putExtra("selectedTab", 2);
+            startActivity(intent);
         });
     }
 
