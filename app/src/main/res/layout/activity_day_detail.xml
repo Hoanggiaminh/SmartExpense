@@ -6,93 +6,90 @@
     android:layout_height="match_parent"
     android:id="@+id/main"
     android:background="@color/background"
-    tools:context=".CalendarActivity">
+    tools:context=".DayDetailActivity">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:layout_marginBottom="72dp">
+        android:orientation="vertical">
 
+        <!-- Header Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/spacing_medium">
+            android:background="@color/white"
+            android:paddingHorizontal="@dimen/spacing_medium"
+            android:paddingTop="40dp"
+            android:paddingBottom="@dimen/spacing_medium"
+            android:elevation="4dp">
 
-            <!-- Calendar Header with Month Navigation -->
+            <!-- Header with back button and date -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="@dimen/spacing_medium">
+                android:gravity="center_vertical">
 
                 <ImageView
-                    android:id="@+id/btnPreviousMonth"
+                    android:id="@+id/btnBack"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:src="@drawable/ic_arrow_back"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="4dp"
                     app:tint="@color/text_primary"
-                    android:contentDescription="@string/previous_month" />
+                    android:contentDescription="@string/back" />
 
                 <TextView
-                    android:id="@+id/tvMonthYear"
+                    android:id="@+id/tvDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Tháng Mười Hai 2025"
+                    android:text="6 tháng 12 2025"
                     android:textSize="18sp"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/inter_bold"
                     android:textStyle="bold"
                     android:gravity="center" />
 
-                <ImageView
-                    android:id="@+id/btnNextMonth"
+                <View
                     android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_chevron_right"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="4dp"
-                    app:tint="@color/text_primary"
-                    android:contentDescription="@string/next_month" />
+                    android:layout_height="32dp" />
 
             </LinearLayout>
 
-            <!-- Summary Card -->
+            <!-- Summary Cards -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:background="@drawable/bg_input_border"
-                android:padding="16dp"
-                android:layout_marginBottom="@dimen/spacing_medium">
+                android:layout_marginTop="@dimen/spacing_medium">
 
-                <!-- Income Section -->
+                <!-- Income Card -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
+                    android:background="@drawable/bg_input_border"
+                    android:padding="12dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Thu nhập"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
                         android:fontFamily="@font/inter_regular" />
 
                     <TextView
-                        android:id="@+id/tvMonthlyIncome"
+                        android:id="@+id/tvDayIncome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 655,566"
+                        android:text="$ 0"
                         android:textSize="16sp"
                         android:textColor="@color/income"
                         android:fontFamily="@font/inter_bold"
@@ -101,24 +98,28 @@
 
                 </LinearLayout>
 
-                <!-- Expense Section -->
+                <!-- Expense Card -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
+                    android:background="@drawable/bg_input_border"
+                    android:padding="12dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
                     android:gravity="center">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Chi tiêu"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
                         android:fontFamily="@font/inter_regular" />
 
                     <TextView
-                        android:id="@+id/tvMonthlyExpense"
+                        android:id="@+id/tvDayExpense"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="$ 0"
@@ -130,27 +131,30 @@
 
                 </LinearLayout>
 
-                <!-- Balance Section -->
+                <!-- Balance Card -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical"
+                    android:background="@drawable/bg_input_border"
+                    android:padding="12dp"
+                    android:layout_marginStart="8dp"
                     android:gravity="center">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Số dư"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/text_secondary"
                         android:fontFamily="@font/inter_regular" />
 
                     <TextView
-                        android:id="@+id/tvMonthlyBalance"
+                        android:id="@+id/tvDayBalance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 655,566"
+                        android:text="$ 0"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:fontFamily="@font/inter_bold"
@@ -161,105 +165,46 @@
 
             </LinearLayout>
 
-            <!-- Day of Week Header -->
+        </LinearLayout>
+
+        <!-- Transactions List -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/background">
+
+            <!-- Empty State -->
             <LinearLayout
+                android:id="@+id/emptyState"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:visibility="gone">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sun"
-                    android:textSize="12sp"
+                    android:text="Không có giao dịch"
+                    android:textSize="16sp"
                     android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_medium"
-                    android:gravity="center" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Mon"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_medium"
-                    android:gravity="center" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Tue"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_medium"
-                    android:gravity="center" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Wed"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_medium"
-                    android:gravity="center" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Thu"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_medium"
-                    android:gravity="center" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Fri"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_medium"
-                    android:gravity="center" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Sat"
-                    android:textSize="12sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_medium"
-                    android:gravity="center" />
+                    android:fontFamily="@font/inter_regular" />
 
             </LinearLayout>
 
-            <!-- Calendar Grid -->
+            <!-- Transaction List -->
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvCalendar"
+                android:id="@+id/rvDayTransactions"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:itemCount="35"
-                tools:listitem="@layout/item_calendar_day" />
+                android:layout_height="match_parent"
+                android:padding="@dimen/spacing_medium"
+                android:clipToPadding="false"
+                tools:listitem="@layout/item_transaction" />
 
         </LinearLayout>
 
-    </ScrollView>
-
-    <!-- Custom Bottom Navigation Bar -->
-    <include
-        android:id="@+id/bottom_navigation"
-        layout="@layout/custom_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+    </LinearLayout>
 
     <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -267,16 +212,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:layout_gravity="bottom|end"
         android:contentDescription="@string/add_transaction"
-        android:elevation="16dp"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/primary"
         app:borderWidth="0dp"
         app:fabSize="normal"
-        app:layout_anchor="@id/bottom_navigation"
-        app:layout_anchorGravity="top|center"
         app:maxImageSize="32dp"
-        app:tint="@color/white"
-        android:translationY="-36dp" />
+        app:tint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+

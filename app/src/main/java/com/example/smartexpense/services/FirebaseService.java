@@ -193,6 +193,20 @@ public class FirebaseService {
                 .get();
     }
 
+    // Get transactions between two dates
+    public Task<QuerySnapshot> getTransactionsBetweenDates(Timestamp startDate, Timestamp endDate) {
+        String userId = getCurrentUserId();
+        if (userId == null) return null;
+
+        return db.collection("users")
+                .document(userId)
+                .collection("transactions")
+                .whereGreaterThanOrEqualTo("date", startDate)
+                .whereLessThanOrEqualTo("date", endDate)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .get();
+    }
+
     // Lấy chi tiết một transaction theo ID
     public Task<DocumentSnapshot> getTransactionById(String transactionId) {
         String userId = getCurrentUserId();
@@ -285,6 +299,42 @@ public class FirebaseService {
                 .collection("categories")
                 .whereEqualTo("type", type)
                 .get();
+    }
+
+    // Lấy tất cả danh mục của user (cả income và expense)
+    public Task<List<Category>> getAllUserCategories() {
+        String userId = getCurrentUserId();
+        if (userId == null) return Tasks.forResult(new ArrayList<>());
+
+        // Get both default and user categories
+        Task<QuerySnapshot> defaultCategoriesTask = db.collection("default_categories").get();
+        Task<QuerySnapshot> userCategoriesTask = db.collection("users")
+                .document(userId)
+                .collection("categories")
+                .get();
+
+        return Tasks.whenAllSuccess(defaultCategoriesTask, userCategoriesTask)
+                .continueWith(task -> {
+                    List<Category> allCategories = new ArrayList<>();
+
+                    // Add default categories
+                    QuerySnapshot defaultResult = (QuerySnapshot) task.getResult().get(0);
+                    defaultResult.forEach(document -> {
+                        Category category = document.toObject(Category.class);
+                        category.setId(document.getId());
+                        allCategories.add(category);
+                    });
+
+                    // Add user categories
+                    QuerySnapshot userResult = (QuerySnapshot) task.getResult().get(1);
+                    userResult.forEach(document -> {
+                        Category category = document.toObject(Category.class);
+                        category.setId(document.getId());
+                        allCategories.add(category);
+                    });
+
+                    return allCategories;
+                });
     }
 
     // Thêm danh mục mới vào subcollection của user
