@@ -21,11 +21,11 @@
             <!-- Header Section -->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="210dp"
                 android:background="@drawable/bg_img"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/spacing_medium"
-                android:paddingTop="40dp">
+                android:paddingTop="10dp">
 
                 <!-- Greeting -->
                 <LinearLayout
@@ -44,12 +44,13 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Chào buổi sáng,"
+                            android:text="Xin chào,"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:fontFamily="@font/inter_regular" />
 
                         <TextView
+                            android:id="@+id/tv_user_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Gia Minh"
@@ -60,13 +61,6 @@
                             android:layout_marginTop="4dp" />
 
                     </LinearLayout>
-
-                    <!-- Notification icon -->
-                    <ImageView
-                        android:layout_width="@dimen/icon_medium"
-                        android:layout_height="@dimen/icon_medium"
-                        android:src="@drawable/ic_notification"
-                        app:tint="@color/white" />
 
                 </LinearLayout>
 
@@ -99,20 +93,21 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tổng chi tiêu tháng trước"
+                            android:text="Số dư hiện tại"
                             android:textColor="@color/on_primary"
-                            android:textSize="16sp"
+                            android:textSize="18sp"
                             android:fontFamily="@font/inter_regular" />
 
                         <TextView
+                            android:id="@+id/tv_balance"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="2,500,000 VND"
+                            android:text="2.500.000 VND"
                             android:textColor="@color/on_primary"
                             android:textSize="28sp"
                             android:fontFamily="@font/inter_bold"
                             android:textStyle="bold"
-                            android:layout_marginTop="6dp" />
+                            android:layout_marginTop="4dp" />
 
                         <!-- Income and Expense Stats -->
                         <LinearLayout
@@ -146,7 +141,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Tổng thu"
+                                        android:text="Thu tháng này"
                                         android:textColor="#CDEAFF"
                                         android:textSize="16sp"
                                         android:fontFamily="@font/inter_regular" />
@@ -154,9 +149,10 @@
                                 </LinearLayout>
 
                                 <TextView
+                                    android:id="@+id/tv_income_this_month"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="36,000,000 VND"
+                                    android:text="36.000.000 VND"
                                     android:textColor="@color/on_primary"
                                     android:textSize="18sp"
                                     android:fontFamily="@font/inter_medium"
@@ -191,7 +187,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Tổng chi"
+                                        android:text="Chi tháng này"
                                         android:textColor="#CDEAFF"
                                         android:textSize="16sp"
                                         android:fontFamily="@font/inter_regular" />
@@ -199,9 +195,10 @@
                                 </LinearLayout>
 
                                 <TextView
+                                    android:id="@+id/tv_expense_this_month"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="16,000,000 VND"
+                                    android:text="16.000.000 VND"
                                     android:textColor="@color/on_primary"
                                     android:textSize="18sp"
                                     android:fontFamily="@font/inter_medium"
@@ -236,9 +233,10 @@
                         android:fontFamily="@font/inter_bold" />
 
                     <TextView
+                        android:id="@+id/tv_filter_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Ăn uống"
+                        android:text="Tất cả"
                         android:textColor="@color/primary"
                         android:textSize="14sp"
                         android:fontFamily="@font/inter_medium"
@@ -248,6 +246,7 @@
                         android:paddingVertical="6dp" />
 
                     <ImageView
+                        android:id="@+id/btn_filter"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_filter"
