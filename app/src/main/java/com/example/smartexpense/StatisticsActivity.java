@@ -37,7 +37,7 @@ import java.util.Map;
 public class StatisticsActivity extends BaseActivity {
 
     private TextView tvBalance, btnColumnChart, btnPieChart, tvDateRange;
-    private ImageView btnBack, btnPrevWeek, btnNextWeek;
+    private ImageView btnPrevWeek, btnNextWeek;
     private LinearLayout chartContainer;
     private LinearLayout categoriesContainer;
 
@@ -96,7 +96,6 @@ public class StatisticsActivity extends BaseActivity {
         btnColumnChart = findViewById(R.id.btnColumnChart);
         btnPieChart = findViewById(R.id.btnPieChart);
         tvDateRange = findViewById(R.id.tvDateRange);
-        btnBack = findViewById(R.id.btnBack);
         btnPrevWeek = findViewById(R.id.btnPrevWeek);
         btnNextWeek = findViewById(R.id.btnNextWeek);
         chartContainer = findViewById(R.id.chartContainer);
@@ -104,7 +103,6 @@ public class StatisticsActivity extends BaseActivity {
     }
 
     private void setupClickListeners() {
-        btnBack.setOnClickListener(v -> finish());
 
         btnPrevWeek.setOnClickListener(v -> {
             currentWeekStart.add(Calendar.WEEK_OF_YEAR, -1);

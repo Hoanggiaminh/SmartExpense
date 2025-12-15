@@ -12,8 +12,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends BaseActivity {
-
-    private ImageView btnBack;
     private LinearLayout btnFinancialSettings, btnCategoryManagement, btnLogout, btnDeleteAccount;
     private TextView tvUserName, tvUserEmail;
     private FirebaseAuth mAuth;
@@ -40,7 +38,6 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void initViews() {
-        btnBack = findViewById(R.id.btnBack);
         btnFinancialSettings = findViewById(R.id.btnFinancialSettings);
         btnCategoryManagement = findViewById(R.id.btnCategoryManagement);
         btnLogout = findViewById(R.id.btnLogout);
@@ -70,12 +67,6 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void setupClickListeners() {
-        btnBack.setOnClickListener(v -> {
-            // Navigate back to MainActivity
-            Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-        });
 
         btnFinancialSettings.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, FinancialSettingsActivity.class);

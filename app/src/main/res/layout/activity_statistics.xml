@@ -31,28 +31,16 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="12dp">
 
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_back"
-                    android:contentDescription="Back"
-                    android:clickable="true"
-                    android:focusable="true" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Thống kê chi tiêu"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/inter_semibold"
+                    android:textStyle="bold"
                     android:gravity="center" />
-
-                <View
-                    android:layout_width="24dp"
-                    android:layout_height="24dp" />
 
             </LinearLayout>
 
@@ -123,16 +111,6 @@
                     android:textColor="@color/text_primary"
                     android:fontFamily="@font/inter_bold"
                     android:layout_marginTop="4dp" />
-
-                <TextView
-                    android:id="@+id/tvCurrency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="đ"
-                    android:textSize="18sp"
-                    android:textColor="@color/text_secondary"
-                    android:fontFamily="@font/inter_regular"
-                    android:layout_marginStart="4dp" />
 
             </LinearLayout>
 
@@ -280,9 +258,10 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Danh mục"
+                    android:text="Chi tiết danh mục"
                     android:textSize="18sp"
                     android:textColor="@color/text_primary"
+                    android:textStyle="bold"
                     android:fontFamily="@font/inter_semibold" />
 
                 <!-- Legend for categories -->
