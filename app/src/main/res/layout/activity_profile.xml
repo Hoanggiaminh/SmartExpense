@@ -12,47 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Custom Header -->
-        <LinearLayout
-            android:id="@+id/header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:gravity="center_vertical"
-            android:elevation="2dp">
 
-            <ImageView
-                android:id="@+id/btnBack"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_arrow_back"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="@color/text_primary"
-                android:contentDescription="@string/back" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="16dp"
-                android:text="Tài khoản &amp; Hồ sơ"
-                android:textSize="18sp"
-                android:textColor="@color/text_primary"
-                android:fontFamily="@font/inter_bold"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/btnSearch"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_more"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="@color/text_primary"
-                android:contentDescription="Search" />
-
-        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -252,7 +212,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_logout"
-                                app:tint="@color/text_secondary" />
+                                app:tint="@color/primary" />
 
                             <TextView
                                 android:layout_width="wrap_content"

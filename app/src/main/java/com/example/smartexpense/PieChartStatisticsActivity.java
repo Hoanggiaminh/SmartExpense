@@ -43,7 +43,6 @@ public class PieChartStatisticsActivity extends BaseActivity {
 
     private TextView tvMonthYear, tvBalance;
     private TextView btnIncome, btnExpense;
-    private ImageView btnBack;
     private ImageButton btnPreviousMonth, btnNextMonth;
     private TextView btnColumnChart, btnPieChart;
     private LinearLayout categoriesContainer;
@@ -121,7 +120,6 @@ public class PieChartStatisticsActivity extends BaseActivity {
     }
 
     private void initViews() {
-        btnBack = findViewById(R.id.btnBack);
         tvMonthYear = findViewById(R.id.tvMonthYear);
         tvBalance = findViewById(R.id.tvBalance);
         btnPreviousMonth = findViewById(R.id.btnPreviousMonth);
@@ -156,7 +154,6 @@ public class PieChartStatisticsActivity extends BaseActivity {
     }
 
     private void setupClickListeners() {
-        btnBack.setOnClickListener(v -> finish());
 
         btnPreviousMonth.setOnClickListener(v -> {
             currentMonth.add(Calendar.MONTH, -1);

@@ -31,28 +31,16 @@
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="12dp">
 
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_back"
-                    android:contentDescription="Back"
-                    android:clickable="true"
-                    android:focusable="true" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Thống kê chi tiêu"
-                    android:textSize="18sp"
+                    android:textSize="20sp"
                     android:textColor="@color/text_primary"
+                    android:textStyle="bold"
                     android:fontFamily="@font/inter_semibold"
                     android:gravity="center" />
-
-                <View
-                    android:layout_width="24dp"
-                    android:layout_height="24dp" />
 
             </LinearLayout>
 
@@ -209,7 +197,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Số dư"
+                            android:text="Tổng"
                             android:textSize="14sp"
                             android:textColor="@color/text_secondary"
                             android:fontFamily="@font/inter_regular" />
@@ -224,14 +212,6 @@
                             android:fontFamily="@font/inter_bold"
                             android:textStyle="bold"
                             android:layout_marginTop="4dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/currency_symbol"
-                            android:textSize="16sp"
-                            android:textColor="@color/text_secondary"
-                            android:fontFamily="@font/inter_regular" />
 
                     </LinearLayout>
 
@@ -275,4 +255,3 @@
         android:layout_gravity="bottom" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
