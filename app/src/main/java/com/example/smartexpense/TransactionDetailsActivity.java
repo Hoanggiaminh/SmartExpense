@@ -20,10 +20,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.example.smartexpense.model.Category;
 import com.example.smartexpense.services.FirebaseService;
+import com.example.smartexpense.utils.CurrencyUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.Timestamp;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,8 +54,6 @@ public class TransactionDetailsActivity extends AppCompatActivity {
     private String transactionCategoryId;
     private long transactionDateSeconds;
 
-    private NumberFormat currencyFormat;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +66,6 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         });
 
         firebaseService = FirebaseService.getInstance();
-        currencyFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
 
         initViews();
         loadTransactionData();
@@ -244,13 +241,12 @@ public class TransactionDetailsActivity extends AppCompatActivity {
         
         String formattedAmount;
         int amountColor;
-        int badgeBackground;
 
         if ("income".equals(transactionType)) {
-            formattedAmount = "+ " + currencyFormat.format(transactionAmount) + " VNĐ";
+            formattedAmount = "+ " + CurrencyUtils.formatCurrency(transactionAmount);
             amountColor = ContextCompat.getColor(this, R.color.income);
         } else {
-            formattedAmount = "- " + currencyFormat.format(transactionAmount) + " VNĐ";
+            formattedAmount = "- " + CurrencyUtils.formatCurrency(transactionAmount);
             amountColor = ContextCompat.getColor(this, R.color.expense);
         }
 

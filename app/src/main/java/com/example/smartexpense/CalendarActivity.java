@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartexpense.services.FirebaseService;
+import com.example.smartexpense.utils.CurrencyUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 
@@ -242,12 +243,6 @@ public class CalendarActivity extends BaseActivity {
     }
 
     private String formatCurrency(double amount) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        symbols.setGroupingSeparator(',');
-        DecimalFormat formatter = new DecimalFormat("$ #,###", symbols);
-        if (amount == 0) {
-            return "$ 0";
-        }
-        return formatter.format(amount);
+        return CurrencyUtils.formatCurrency(amount);
     }
 }

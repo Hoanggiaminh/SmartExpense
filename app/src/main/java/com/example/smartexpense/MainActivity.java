@@ -21,6 +21,7 @@ import com.example.smartexpense.model.Category;
 import com.example.smartexpense.model.Transaction;
 import com.example.smartexpense.model.TransactionItem;
 import com.example.smartexpense.services.FirebaseService;
+import com.example.smartexpense.utils.CurrencyUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -146,7 +147,7 @@ public class MainActivity extends BaseActivity {
         firebaseService.getUserBalance(userId)
                 .addOnSuccessListener(balance -> {
                     // Format and set balance
-                    String formattedBalance = formatCurrency(balance);
+                    String formattedBalance = CurrencyUtils.formatCurrency(balance);
                     tvBalance.setText(formattedBalance);
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Lỗi khi tải số dư", Toast.LENGTH_SHORT).show());
@@ -154,7 +155,7 @@ public class MainActivity extends BaseActivity {
         firebaseService.getIncomeThisMonth(userId)
                 .addOnSuccessListener(income -> {
                     // Format and set income
-                    String formattedIncome = formatCurrency(income);
+                    String formattedIncome = CurrencyUtils.formatCurrency(income);
                     tvIncomeThisMonth.setText(formattedIncome);
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Lỗi khi tải thu nhập tháng này", Toast.LENGTH_SHORT).show());
@@ -162,15 +163,10 @@ public class MainActivity extends BaseActivity {
         firebaseService.getExpenseThisMonth(userId)
                 .addOnSuccessListener(expense -> {
                     // Format and set expense
-                    String formattedExpense = formatCurrency(expense);
+                    String formattedExpense = CurrencyUtils.formatCurrency(expense);
                     tvExpenseThisMonth.setText(formattedExpense);
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, "Lỗi khi tải chi tiêu tháng này", Toast.LENGTH_SHORT).show());
-    }
-
-    private String formatCurrency(double amount) {
-        NumberFormat formatter = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-        return formatter.format(amount) + " VNĐ";
     }
 
     private void loadCategoriesAndTransactions() {

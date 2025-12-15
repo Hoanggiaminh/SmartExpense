@@ -20,7 +20,7 @@
             android:orientation="vertical"
             android:background="@color/white"
             android:paddingHorizontal="@dimen/spacing_medium"
-            android:paddingTop="40dp"
+            android:paddingTop="20dp"
             android:paddingBottom="@dimen/spacing_medium"
             android:elevation="4dp">
 
@@ -73,8 +73,9 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:background="@drawable/bg_input_border"
-                    android:padding="12dp"
-                    android:layout_marginEnd="8dp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="8dp"
+                    android:layout_marginEnd="4dp"
                     android:gravity="center">
 
                     <TextView
@@ -89,7 +90,7 @@
                         android:id="@+id/tvDayIncome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 0"
+                        android:text="0"
                         android:textSize="16sp"
                         android:textColor="@color/income"
                         android:fontFamily="@font/inter_bold"
@@ -105,9 +106,10 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:background="@drawable/bg_input_border"
-                    android:padding="12dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="8dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="4dp"
                     android:gravity="center">
 
                     <TextView
@@ -122,7 +124,7 @@
                         android:id="@+id/tvDayExpense"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 0"
+                        android:text="0"
                         android:textSize="16sp"
                         android:textColor="@color/expense"
                         android:fontFamily="@font/inter_bold"
@@ -138,8 +140,9 @@
                     android:layout_weight="1"
                     android:orientation="vertical"
                     android:background="@drawable/bg_input_border"
-                    android:padding="12dp"
-                    android:layout_marginStart="8dp"
+                    android:paddingVertical="12dp"
+                    android:paddingHorizontal="8dp"
+                    android:layout_marginStart="4dp"
                     android:gravity="center">
 
                     <TextView
@@ -154,7 +157,7 @@
                         android:id="@+id/tvDayBalance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 0"
+                        android:text="0"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:fontFamily="@font/inter_bold"
