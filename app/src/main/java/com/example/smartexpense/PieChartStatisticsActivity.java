@@ -21,6 +21,7 @@ import com.example.smartexpense.model.Category;
 import com.example.smartexpense.model.CategoryStat;
 import com.example.smartexpense.model.Transaction;
 import com.example.smartexpense.services.FirebaseService;
+import com.example.smartexpense.utils.CurrencyUtils;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -55,8 +56,6 @@ public class PieChartStatisticsActivity extends BaseActivity {
     private Map<String, Category> categoryMap;
     private String currentType = "income"; // "income" or "expense"
 
-    private NumberFormat currencyFormat;
-
     // Màu sắc cho biểu đồ tròn
     private static final int[] INCOME_COLORS = {
             Color.rgb(52, 199, 89),    // Xanh lá chính
@@ -89,7 +88,6 @@ public class PieChartStatisticsActivity extends BaseActivity {
 
         // Initialize Firebase
         firebaseService = FirebaseService.getInstance();
-        currencyFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
 
         // Initialize calendar to current month
         currentMonth = Calendar.getInstance();
@@ -313,7 +311,7 @@ public class PieChartStatisticsActivity extends BaseActivity {
         for (CategoryStat stat : categoryStats) {
             total += stat.getAmount();
         }
-        tvBalance.setText(currencyFormat.format(total));
+        tvBalance.setText(CurrencyUtils.formatCurrency(total));
 
         if ("income".equals(currentType)) {
             tvBalance.setTextColor(ContextCompat.getColor(this, R.color.income));
@@ -371,7 +369,7 @@ public class PieChartStatisticsActivity extends BaseActivity {
 
             // Set data
             tvName.setText(stat.getCategoryName());
-            tvAmount.setText(currencyFormat.format(stat.getAmount()) + "đ");
+            tvAmount.setText(CurrencyUtils.formatCurrency(stat.getAmount()));
             tvPercentage.setText(String.format("%.0f%%", stat.getPercentage()));
             progressBar.setProgress((int) stat.getPercentage());
 

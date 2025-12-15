@@ -12,15 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartexpense.R;
 import com.example.smartexpense.model.TransactionItem;
+import com.example.smartexpense.utils.CurrencyUtils;
 
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.ViewHolder> {
     private List<TransactionItem> transactions;
     private Context context;
-    private NumberFormat currencyFormat;
     private OnTransactionClickListener clickListener;
 
     public interface OnTransactionClickListener {
@@ -30,7 +29,6 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     public TransactionAdapter(Context context, List<TransactionItem> transactions) {
         this.context = context;
         this.transactions = transactions;
-        this.currencyFormat = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
     }
 
     public void setOnTransactionClickListener(OnTransactionClickListener listener) {
@@ -69,10 +67,10 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         int amountColor;
 
         if ("income".equals(item.getType())) {
-            formattedAmount = "+ " + currencyFormat.format(item.getAmount()) + " VNĐ";
+            formattedAmount = "+ " + CurrencyUtils.formatCurrency(item.getAmount());
             amountColor = ContextCompat.getColor(context, R.color.income);
         } else {
-            formattedAmount = "- " + currencyFormat.format(item.getAmount()) + " VNĐ";
+            formattedAmount = "- " + CurrencyUtils.formatCurrency(item.getAmount());
             amountColor = ContextCompat.getColor(context, R.color.expense);
         }
 

@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
+import com.example.smartexpense.utils.CurrencyUtils;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +78,7 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayAdapter.
                 Double amount = dayAmounts.get(dateKey);
                 if (amount != null && amount != 0) {
                     holder.tvAmount.setVisibility(View.VISIBLE);
-                    holder.tvAmount.setText(formatAmount(amount));
+                    holder.tvAmount.setText(CurrencyUtils.formatNumber(Math.abs(amount)));
 
                     // Set color based on positive/negative
                     if (amount > 0) {
@@ -168,13 +168,6 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayAdapter.
                 date.get(Calendar.YEAR),
                 date.get(Calendar.MONTH) + 1,
                 date.get(Calendar.DAY_OF_MONTH));
-    }
-
-    private String formatAmount(double amount) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        symbols.setGroupingSeparator(',');
-        DecimalFormat formatter = new DecimalFormat("#,###", symbols);
-        return formatter.format(Math.abs(amount));
     }
 
     private boolean isSameDay(Calendar cal1, Calendar cal2) {

@@ -19,6 +19,7 @@ import com.example.smartexpense.adapters.TransactionAdapter;
 import com.example.smartexpense.model.Category;
 import com.example.smartexpense.model.Transaction;
 import com.example.smartexpense.model.TransactionItem;
+import com.example.smartexpense.utils.CurrencyUtils;
 import com.example.smartexpense.services.FirebaseService;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
@@ -174,9 +175,9 @@ public class DayDetailActivity extends AppCompatActivity {
                     // Update summary
                     double totalIncome = totals[0];
                     double totalExpense = totals[1];
-                    tvDayIncome.setText(formatCurrency(totalIncome));
-                    tvDayExpense.setText(formatCurrency(totalExpense));
-                    tvDayBalance.setText(formatCurrency(totalIncome - totalExpense));
+                    tvDayIncome.setText(CurrencyUtils.formatCurrency(totalIncome));
+                    tvDayExpense.setText(CurrencyUtils.formatCurrency(totalExpense));
+                    tvDayBalance.setText(CurrencyUtils.formatCurrency(totalIncome - totalExpense));
 
                     // Convert to transaction items
                     convertToTransactionItems(transactions);
@@ -240,16 +241,6 @@ public class DayDetailActivity extends AppCompatActivity {
         });
     }
 
-    private String formatCurrency(double amount) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.US);
-        symbols.setGroupingSeparator(',');
-        DecimalFormat formatter = new DecimalFormat("$ #,###", symbols);
-        if (amount == 0) {
-            return "$ 0";
-        }
-        return formatter.format(amount);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -257,4 +248,3 @@ public class DayDetailActivity extends AppCompatActivity {
         loadCategoriesAndTransactions();
     }
 }
-

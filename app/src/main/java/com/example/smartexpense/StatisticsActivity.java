@@ -23,6 +23,7 @@ import com.example.smartexpense.model.Category;
 import com.example.smartexpense.model.CategoryStat;
 import com.example.smartexpense.model.Transaction;
 import com.example.smartexpense.services.FirebaseService;
+import com.example.smartexpense.utils.CurrencyUtils;
 import com.google.firebase.Timestamp;
 
 import java.text.NumberFormat;
@@ -196,8 +197,8 @@ public class StatisticsActivity extends BaseActivity {
 
         double balance = totalIncome - totalExpense;
 
-        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-        tvBalance.setText(numberFormat.format(balance));
+        String formattedBalance = CurrencyUtils.formatCurrency(balance);
+        tvBalance.setText(formattedBalance);
 
         // Change color based on balance
         if (balance < 0) {
@@ -461,8 +462,6 @@ public class StatisticsActivity extends BaseActivity {
         // Clear container and add all category stat views
         categoriesContainer.removeAllViews();
 
-        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-
         for (CategoryStat stat : categoryStats) {
             View itemView = getLayoutInflater().inflate(R.layout.item_category_stat, categoriesContainer, false);
 
@@ -474,7 +473,7 @@ public class StatisticsActivity extends BaseActivity {
 
             // Set data
             tvName.setText(stat.getCategoryName());
-            tvAmount.setText(numberFormat.format(stat.getAmount()) + "đ");
+            tvAmount.setText(CurrencyUtils.formatCurrency(stat.getAmount()));
             tvPercentage.setText(String.format("%.0f%%", stat.getPercentage()));
             progressBar.setProgress((int) stat.getPercentage());
 

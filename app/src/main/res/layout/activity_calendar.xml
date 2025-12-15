@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="@dimen/spacing_medium">
 
                 <ImageView
@@ -92,7 +92,7 @@
                         android:id="@+id/tvMonthlyIncome"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 655,566"
+                        android:text="655,566"
                         android:textSize="16sp"
                         android:textColor="@color/income"
                         android:fontFamily="@font/inter_bold"
@@ -121,7 +121,7 @@
                         android:id="@+id/tvMonthlyExpense"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 0"
+                        android:text="0"
                         android:textSize="16sp"
                         android:textColor="@color/expense"
                         android:fontFamily="@font/inter_bold"
@@ -150,7 +150,7 @@
                         android:id="@+id/tvMonthlyBalance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$ 655,566"
+                        android:text="655,566"
                         android:textSize="16sp"
                         android:textColor="@color/text_primary"
                         android:fontFamily="@font/inter_bold"
