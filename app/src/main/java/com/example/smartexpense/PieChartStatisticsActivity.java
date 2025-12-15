@@ -181,7 +181,10 @@ public class PieChartStatisticsActivity extends BaseActivity {
             }
         });
 
-        btnColumnChart.setOnClickListener(v -> finish());
+        btnColumnChart.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
     }
 
     private void updateTypeToggle() {
@@ -256,10 +259,21 @@ public class PieChartStatisticsActivity extends BaseActivity {
     }
 
     private void updateUI() {
-        calculateCategoryStats();
-        updateBalance();
-        updatePieChart();
-        displayCategories();
+        // Add fade out animation
+        categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        pieChart.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+
+        // Update data after a short delay
+        categoriesContainer.postDelayed(() -> {
+            calculateCategoryStats();
+            updateBalance();
+            updatePieChart();
+            displayCategories();
+
+            // Add fade in animation
+            categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+            pieChart.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+        }, 200);
     }
 
     private void calculateCategoryStats() {

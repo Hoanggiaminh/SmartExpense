@@ -52,8 +52,10 @@ public class CategoryManageAdapter extends RecyclerView.Adapter<CategoryManageAd
     }
 
     public void updateCategories(List<Category> newCategories) {
-        this.categories = newCategories;
+        this.categories.clear();
+        this.categories.addAll(newCategories);
         notifyDataSetChanged();
+        android.util.Log.d("CategoryManageAdapter", "Updated with " + newCategories.size() + " categories");
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

@@ -123,6 +123,7 @@ public class StatisticsActivity extends BaseActivity {
             Intent intent = new Intent(StatisticsActivity.this, PieChartStatisticsActivity.class);
             intent.putExtra("selectedTab", 2);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
     }
 
@@ -169,17 +170,13 @@ public class StatisticsActivity extends BaseActivity {
                         }
                     }
 
-                    // Update UI
-                    updateBalance();
-                    updateChart();
-                    updateCategoryStats();
+                    // Update UI with animation
+                    updateUIWithAnimation();
                 })
                 .addOnFailureListener(e -> {
                     // Handle error
                     weekTransactions = new ArrayList<>();
-                    updateBalance();
-                    updateChart();
-                    updateCategoryStats();
+                    updateUIWithAnimation();
                 });
     }
 
@@ -206,6 +203,31 @@ public class StatisticsActivity extends BaseActivity {
         } else {
             tvBalance.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
         }
+    }
+
+    private void updateUIWithAnimation() {
+        // Add fade out animation
+        if (chartContainer != null) {
+            chartContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        }
+        if (categoriesContainer != null) {
+            categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        }
+
+        // Update data after a short delay
+        chartContainer.postDelayed(() -> {
+            updateBalance();
+            updateChart();
+            updateCategoryStats();
+
+            // Add fade in animation
+            if (chartContainer != null) {
+                chartContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+            }
+            if (categoriesContainer != null) {
+                categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+            }
+        }, 200);
     }
 
     private void updateChart() {
