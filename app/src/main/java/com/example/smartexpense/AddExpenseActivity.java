@@ -166,6 +166,13 @@ public class AddExpenseActivity extends AppCompatActivity {
         currentMonth = Calendar.getInstance();
         selectedDate = Calendar.getInstance();
 
+        // Check if a date was passed from CalendarActivity
+        long selectedDateMillis = getIntent().getLongExtra("selected_date", -1);
+        if (selectedDateMillis != -1) {
+            selectedDate.setTimeInMillis(selectedDateMillis);
+            currentMonth.setTimeInMillis(selectedDateMillis);
+        }
+
         calendarAdapter = new CalendarDayAdapter(new ArrayList<>(), date -> {
             selectedDate = (Calendar) date.clone();
             updateCalendar();
@@ -174,7 +181,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         rvCalendar.setAdapter(calendarAdapter);
 
         updateCalendar();
-        // Set initial selection to today
+        // Set initial selection to selected date (today or from calendar)
         calendarAdapter.setSelectedDate(selectedDate);
     }
 

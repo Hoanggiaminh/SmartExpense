@@ -169,6 +169,13 @@ public class AddIncomeActivity extends AppCompatActivity {
         currentMonth = Calendar.getInstance();
         selectedDate = Calendar.getInstance();
 
+        // Check if a date was passed from CalendarActivity
+        long selectedDateMillis = getIntent().getLongExtra("selected_date", -1);
+        if (selectedDateMillis != -1) {
+            selectedDate.setTimeInMillis(selectedDateMillis);
+            currentMonth.setTimeInMillis(selectedDateMillis);
+        }
+
         adapter = new CalendarDayAdapter(new ArrayList<>(), date -> {
             selectedDate = (Calendar) date.clone();
             // Don't call updateCalendar() here to avoid resetting selection
@@ -178,7 +185,7 @@ public class AddIncomeActivity extends AppCompatActivity {
         rvCalendar.setAdapter(adapter);
 
         updateCalendar();
-        // Set initial selection to today
+        // Set initial selection to selected date (today or from calendar)
         adapter.setSelectedDate(selectedDate);
     }
 
