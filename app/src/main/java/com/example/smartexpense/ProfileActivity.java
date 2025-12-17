@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class ProfileActivity extends BaseActivity {
-    private LinearLayout btnFinancialSettings, btnCategoryManagement, btnLogout, btnDeleteAccount;
+    private LinearLayout btnCategoryManagement, btnLogout, btnDeleteAccount;
     private TextView tvUserName, tvUserEmail;
     private FirebaseAuth mAuth;
 
@@ -38,7 +38,6 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void initViews() {
-        btnFinancialSettings = findViewById(R.id.btnFinancialSettings);
         btnCategoryManagement = findViewById(R.id.btnCategoryManagement);
         btnLogout = findViewById(R.id.btnLogout);
         btnDeleteAccount = findViewById(R.id.btnDeleteAccount);
@@ -67,11 +66,6 @@ public class ProfileActivity extends BaseActivity {
     }
 
     private void setupClickListeners() {
-
-        btnFinancialSettings.setOnClickListener(v -> {
-            Intent intent = new Intent(ProfileActivity.this, FinancialSettingsActivity.class);
-            startActivity(intent);
-        });
 
         btnCategoryManagement.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileActivity.this, CategoryManagementActivity.class);
@@ -146,24 +140,37 @@ public class ProfileActivity extends BaseActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
 
-            // Xóa tài khoản
-            user.delete()
-                    .addOnCompleteListener(task -> {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            android.widget.Toast.makeText(ProfileActivity.this,
-                                    "Tài khoản đã được xóa thành công",
-                                    android.widget.Toast.LENGTH_SHORT).show();
+            // Xóa dữ liệu người dùng trong Firestore trước
+            com.example.smartexpense.services.FirebaseService.getInstance()
+                    .deleteUserData(user.getUid())
+                    .addOnCompleteListener(deleteDataTask -> {
+                        if (deleteDataTask.isSuccessful()) {
+                            // Sau khi xóa dữ liệu thành công, xóa tài khoản Authentication
+                            user.delete()
+                                    .addOnCompleteListener(deleteAuthTask -> {
+                                        progressDialog.dismiss();
+                                        if (deleteAuthTask.isSuccessful()) {
+                                            android.widget.Toast.makeText(ProfileActivity.this,
+                                                    "Tài khoản đã được xóa thành công",
+                                                    android.widget.Toast.LENGTH_SHORT).show();
 
-                            // Chuyển về màn hình đăng nhập
-                            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                            finish();
+                                            // Chuyển về màn hình đăng nhập
+                                            Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            // Nếu xóa Authentication thất bại (thường do cần xác thực lại)
+                                            android.widget.Toast.makeText(ProfileActivity.this,
+                                                    "Không thể xóa tài khoản. Vui lòng đăng nhập lại và thử lại.",
+                                                    android.widget.Toast.LENGTH_LONG).show();
+                                        }
+                                    });
                         } else {
-                            // Nếu xóa thất bại (thường do cần xác thực lại)
+                            progressDialog.dismiss();
+                            // Nếu xóa dữ liệu Firestore thất bại
                             android.widget.Toast.makeText(ProfileActivity.this,
-                                    "Không thể xóa tài khoản. Vui lòng đăng nhập lại và thử lại.",
+                                    "Không thể xóa dữ liệu tài khoản. Vui lòng thử lại.",
                                     android.widget.Toast.LENGTH_LONG).show();
                         }
                     });
