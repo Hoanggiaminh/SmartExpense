@@ -4,136 +4,71 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp"
-    android:background="@color/white">
+    android:padding="20dp"
+    android:minWidth="320dp">
 
-    <!-- Title -->
     <TextView
-        android:id="@+id/tvDialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add new category"
-        android:textSize="20sp"
+        android:text="Chỉnh sửa danh mục"
         android:textColor="@color/text_primary"
-        android:fontFamily="@font/inter_bold"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginBottom="24dp" />
+        android:layout_marginBottom="20dp"/>
 
-    <!-- Category Name Input -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilCategoryName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:hint="Category name"
-        app:boxBackgroundMode="outline"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusTopEnd="12dp"
-        app:boxCornerRadiusBottomStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp"
-        app:boxStrokeColor="@color/primary"
-        app:hintTextColor="@color/primary">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etCategoryName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/inter_regular"
-            android:inputType="text"
-            android:maxLines="1" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!-- Category Type Selection -->
+    <!-- Category Name -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Category type"
+        android:text="Tên danh mục"
+        android:textColor="@color/text_primary"
         android:textSize="14sp"
-        android:textColor="@color/text_secondary"
-        android:fontFamily="@font/inter_medium"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"/>
 
-    <RadioGroup
-        android:id="@+id/rgCategoryType"
+    <EditText
+        android:id="@+id/etCategoryName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp">
-
-        <RadioButton
-            android:id="@+id/rbIncome"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Income"
-            android:textColor="@color/income"
-            android:fontFamily="@font/inter_medium"
-            android:buttonTint="@color/income" />
-
-        <RadioButton
-            android:id="@+id/rbExpense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Expense"
-            android:textColor="@color/expense"
-            android:fontFamily="@font/inter_medium"
-            android:buttonTint="@color/expense"
-            android:checked="true" />
-
-    </RadioGroup>
-
-    <!-- Icon Selection -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose icon"
-        android:textSize="14sp"
-        android:textColor="@color/text_secondary"
-        android:fontFamily="@font/inter_medium"
-        android:layout_marginBottom="8dp" />
-
-    <!-- Icon Grid -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvIcons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:nestedScrollingEnabled="false" />
+        android:layout_height="48dp"
+        android:background="@drawable/bg_edittext"
+        android:hint="Nhập tên danh mục"
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
 
     <!-- Buttons -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end">
+        android:gravity="end"
+        android:layout_marginTop="8dp">
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="Hủy"
             android:textColor="@color/text_secondary"
-            android:fontFamily="@font/inter_medium"
-            android:textAllCaps="false"
-            android:backgroundTint="@android:color/transparent"
-            app:strokeColor="@android:color/transparent"
-            app:elevation="0dp"
-            android:layout_marginEnd="8dp" />
+            android:textSize="14sp"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:layout_marginEnd="16dp"
+            android:minWidth="64dp"
+            android:gravity="center"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
+        <TextView
+            android:id="@+id/btnUpdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:textColor="@color/white"
-            android:fontFamily="@font/inter_medium"
-            android:textAllCaps="false"
-            app:backgroundTint="@color/primary"
-            app:cornerRadius="8dp" />
-
+            android:text="Cập nhật"
+            android:textColor="@color/primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:padding="12dp"
+            android:background="?attr/selectableItemBackground"
+            android:minWidth="64dp"
+            android:gravity="center"/>
     </LinearLayout>
 
 </LinearLayout>
-

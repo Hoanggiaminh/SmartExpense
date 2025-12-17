@@ -18,12 +18,9 @@ import java.util.List;
 public class CategoryManagementActivity extends AppCompatActivity {
 
     private ImageView btnBack;
-    private RecyclerView rvExpenseCategories;
-    private RecyclerView rvIncomeCategories;
-    private CategoryManageAdapter expenseAdapter;
-    private CategoryManageAdapter incomeAdapter;
-    private List<Category> expenseCategories;
-    private List<Category> incomeCategories;
+    private RecyclerView rvCategories;
+    private CategoryManageAdapter categoryAdapter;
+    private List<Object> categoryItems; // Mix of headers (String) and categories (Category)
     private FirebaseService firebaseService;
 
     @Override
@@ -32,8 +29,7 @@ public class CategoryManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category_management);
 
         firebaseService = FirebaseService.getInstance();
-        expenseCategories = new ArrayList<>();
-        incomeCategories = new ArrayList<>();
+        categoryItems = new ArrayList<>();
 
         initViews();
         setupRecyclerViews();
@@ -47,86 +43,108 @@ public class CategoryManagementActivity extends AppCompatActivity {
         rvIncomeCategories = findViewById(R.id.rvIncomeCategories);
     }
 
-    private void setupRecyclerViews() {
-        // Setup Expense RecyclerView
-        expenseAdapter = new CategoryManageAdapter(this, expenseCategories);
-        rvExpenseCategories.setLayoutManager(new LinearLayoutManager(this));
-        rvExpenseCategories.setAdapter(expenseAdapter);
-        rvExpenseCategories.setNestedScrollingEnabled(false);
+    private void setupRecyclerView() {
+        // Setup single RecyclerView with adapter supporting headers
+        categoryAdapter = new CategoryManageAdapter(this, categoryItems);
+        rvCategories.setLayoutManager(new LinearLayoutManager(this));
+        rvCategories.setAdapter(categoryAdapter);
 
-        // Setup Income RecyclerView
-        incomeAdapter = new CategoryManageAdapter(this, incomeCategories);
-        rvIncomeCategories.setLayoutManager(new LinearLayoutManager(this));
-        rvIncomeCategories.setAdapter(incomeAdapter);
-        rvIncomeCategories.setNestedScrollingEnabled(false);
+        // Set click listeners for edit/delete actions
+        categoryAdapter.setOnCategoryActionListener(new CategoryManageAdapter.OnCategoryActionListener() {
+            @Override
+            public void onEditCategory(Category category) {
+                showEditCategoryDialog(category);
+            }
+
+            @Override
+            public void onDeleteCategory(Category category) {
+                showDeleteCategoryDialog(category);
+            }
+        });
     }
 
     private void loadCategories() {
-        android.util.Log.d("CategoryManagement", "Starting to load categories...");
-
-        // Load expense categories
-        firebaseService.getCategoriesByType("expense")
-                .addOnSuccessListener(categories -> {
-                    android.util.Log.d("CategoryManagement", "SUCCESS: Loaded " + categories.size() + " expense categories");
-
-                    if (categories.isEmpty()) {
-                        android.util.Log.w("CategoryManagement", "No expense categories found!");
-                    }
-
-                    expenseCategories.clear();
-                    expenseCategories.addAll(categories);
-
-                    // Log each category
-                    for (Category cat : categories) {
-                        android.util.Log.d("CategoryManagement", "Expense category: " + cat.getName() + " (ID: " + cat.getId() + ")");
-                    }
-
-                    // Notify adapter on UI thread
-                    runOnUiThread(() -> {
-                        expenseAdapter.notifyDataSetChanged();
-                        android.util.Log.d("CategoryManagement", "Expense adapter notified with " + expenseCategories.size() + " items");
-                    });
-                })
-                .addOnFailureListener(e -> {
-                    android.util.Log.e("CategoryManagement", "FAILED: Error loading expense categories", e);
-                    runOnUiThread(() -> {
-                        Toast.makeText(this, "Lỗi khi tải danh mục chi tiêu: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
-                });
-
         // Load income categories
         firebaseService.getCategoriesByType("income")
-                .addOnSuccessListener(categories -> {
-                    android.util.Log.d("CategoryManagement", "SUCCESS: Loaded " + categories.size() + " income categories");
-
-                    if (categories.isEmpty()) {
-                        android.util.Log.w("CategoryManagement", "No income categories found!");
-                    }
-
-                    incomeCategories.clear();
-                    incomeCategories.addAll(categories);
-
-                    // Log each category
-                    for (Category cat : categories) {
-                        android.util.Log.d("CategoryManagement", "Income category: " + cat.getName() + " (ID: " + cat.getId() + ")");
-                    }
-
-                    // Notify adapter on UI thread
-                    runOnUiThread(() -> {
-                        incomeAdapter.notifyDataSetChanged();
-                        android.util.Log.d("CategoryManagement", "Income adapter notified with " + incomeCategories.size() + " items");
-                    });
+                .addOnSuccessListener(incomeCategories -> {
+                    // Load expense categories
+                    firebaseService.getCategoriesByType("expense")
+                            .addOnSuccessListener(expenseCategories -> {
+                                // Combine all categories with headers
+                                buildCategoryList(incomeCategories, expenseCategories);
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(this, "Lỗi khi tải danh mục chi tiêu", Toast.LENGTH_SHORT).show();
+                            });
                 })
                 .addOnFailureListener(e -> {
-                    android.util.Log.e("CategoryManagement", "FAILED: Error loading income categories", e);
-                    runOnUiThread(() -> {
-                        Toast.makeText(this, "Lỗi khi tải danh mục thu nhập: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
+                    Toast.makeText(this, "Lỗi khi tải danh mục thu nhập", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    private void buildCategoryList(List<Category> incomeCategories, List<Category> expenseCategories) {
+        categoryItems.clear();
+
+        // Add Income section
+        if (!incomeCategories.isEmpty()) {
+            categoryItems.add("Thu nhập"); // Header
+            categoryItems.addAll(incomeCategories); // Income categories
+        }
+
+        // Add Expense section
+        if (!expenseCategories.isEmpty()) {
+            categoryItems.add("Chi tiêu"); // Header
+            categoryItems.addAll(expenseCategories); // Expense categories
+        }
+
+        // Update adapter
+        categoryAdapter.updateItems(categoryItems);
+    }
+
+    private void showEditCategoryDialog(Category category) {
+        AddEditCategoryDialog dialog = new AddEditCategoryDialog(this, category, new AddEditCategoryDialog.OnCategorySaveListener() {
+            @Override
+            public void onSave(Category editedCategory) {
+                // Reload categories after edit
+                loadCategories();
+            }
+        });
+        dialog.show();
+    }
+
+    private void showDeleteCategoryDialog(Category category) {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle("Xóa danh mục");
+        builder.setMessage("Bạn có chắc chắn muốn xóa danh mục '" + category.getName() + "'?\n\nLưu ý: Tất cả giao dịch thuộc danh mục này sẽ được chuyển về danh mục 'Khác' tương ứng.");
+
+        builder.setPositiveButton("Xóa", (dialog, which) -> {
+            deleteCategory(category);
+        });
+
+        builder.setNegativeButton("Hủy", null);
+        builder.show();
+    }
+
+    private void deleteCategory(Category category) {
+        firebaseService.deleteCategoryAndMoveTransactions(category)
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(this, "Xóa danh mục thành công!", Toast.LENGTH_LONG).show();
+                    // Reload categories after deletion
+                    loadCategories();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Lỗi khi xóa danh mục: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
     private void setupClickListeners() {
         btnBack.setOnClickListener(v -> finish());
     }
-}
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reload categories when returning to this activity
+        loadCategories();
+    }
+}

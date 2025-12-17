@@ -30,14 +30,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity
-            android:name=".VerifyOTPActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity
-            android:name=".ResetPasswordActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
-        <activity
             android:name=".MainActivity"
             android:exported="false"/>
         <activity
@@ -61,17 +53,13 @@
             android:exported="false"
             android:parentActivityName=".MainActivity"/>
         <activity
-            android:name=".FinancialSettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".ProfileActivity"/>
-        <activity
             android:name=".DisplaySettingsActivity"
             android:exported="false"
             android:parentActivityName=".ProfileActivity"/>
         <activity
             android:name=".CategoryManagementActivity"
             android:exported="false"
-            android:parentActivityName=".FinancialSettingsActivity"/>
+            android:parentActivityName=".ProfileActivity"/>
         <activity
             android:name=".TransactionDetailsActivity"
             android:exported="false"
