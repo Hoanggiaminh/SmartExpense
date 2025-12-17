@@ -88,7 +88,7 @@ public class DayDetailActivity extends AppCompatActivity {
         fabAddTransaction = findViewById(R.id.fab_add_transaction);
 
         // Set date display
-        SimpleDateFormat sdf = new SimpleDateFormat("d 'tháng' M yyyy", new Locale("vi", "VN"));
+        SimpleDateFormat sdf = new SimpleDateFormat("d 'Tháng' M yyyy", new Locale("vi", "VN"));
         tvDate.setText(sdf.format(selectedDate.getTime()));
     }
 

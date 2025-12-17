@@ -165,6 +165,21 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:nestedScrollingEnabled="false"/>
+
+            <!-- Empty state message -->
+            <TextView
+                android:id="@+id/tvEmptyTransactions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Không có giao dịch nào"
+                android:textSize="16sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:padding="@dimen/spacing_large"
+                android:layout_marginTop="80dp"
+                android:visibility="gone"
+                android:fontFamily="@font/inter_regular" />
+
         </LinearLayout>
     </LinearLayout>
 

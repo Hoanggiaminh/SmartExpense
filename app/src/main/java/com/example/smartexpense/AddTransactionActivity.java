@@ -35,6 +35,7 @@ public class AddTransactionActivity extends AppCompatActivity {
     private MaterialCardView cardAddIncome, cardAddExpense;
     private RecyclerView rvLatestEntries;
     private FloatingActionButton fabAdd;
+    private TextView tvEmptyTransactions;
 
     // Firebase components
     private FirebaseService firebaseService;
@@ -69,6 +70,7 @@ public class AddTransactionActivity extends AppCompatActivity {
         cardAddExpense = findViewById(R.id.cardAddExpense);
         rvLatestEntries = findViewById(R.id.rvLatestEntries);
         fabAdd = findViewById(R.id.fabAdd);
+        tvEmptyTransactions = findViewById(R.id.tvEmptyTransactions);
 
         firebaseService = FirebaseService.getInstance();
         transactionItems = new ArrayList<>();
@@ -213,7 +215,12 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         if (transactions.isEmpty()) {
             transactionAdapter.updateTransactions(transactionItems);
+            tvEmptyTransactions.setVisibility(TextView.VISIBLE);
+            rvLatestEntries.setVisibility(RecyclerView.GONE);
             return;
+        } else {
+            tvEmptyTransactions.setVisibility(TextView.GONE);
+            rvLatestEntries.setVisibility(RecyclerView.VISIBLE);
         }
 
         // Sort transactions by date (newest first)

@@ -30,28 +30,8 @@
                 app:tint="@color/text_primary"
                 android:contentDescription="@string/back" />
 
-            <!-- Back button row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_arrow_back"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:tint="@color/text_primary"
-                    android:contentDescription="@string/back" />
-
-            </LinearLayout>
-
-            <!-- Title centered below -->
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="16dp"
@@ -59,14 +39,13 @@
                 android:textSize="18sp"
                 android:textColor="@color/text_primary"
                 android:fontFamily="@font/inter_bold"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:paddingBottom="8dp" />
+                android:textStyle="bold" />
 
         </LinearLayout>
 
-        <!-- ScrollView chứa các danh mục -->
-        <ScrollView
+        <!-- RecyclerView for categories -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCategories"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
