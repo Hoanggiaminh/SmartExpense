@@ -138,8 +138,10 @@ public class CalendarActivity extends BaseActivity {
     }
 
     private void updateMonthYearDisplay() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", new Locale("vi", "VN"));
-        tvMonthYear.setText(sdf.format(currentMonth.getTime()));
+        SimpleDateFormat sdf = new SimpleDateFormat("MM yyyy", new Locale("vi", "VN"));
+
+        String text = "Tháng " + sdf.format(currentMonth.getTime());
+        tvMonthYear.setText(text);
     }
 
     private void loadMonthTransactions() {

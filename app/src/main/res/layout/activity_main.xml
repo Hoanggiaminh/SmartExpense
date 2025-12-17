@@ -261,6 +261,20 @@
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/item_transaction" />
 
+                <!-- Empty state message -->
+                <TextView
+                    android:id="@+id/tv_empty_transactions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Không có giao dịch nào"
+                    android:textSize="16sp"
+                    android:textColor="@color/text_secondary"
+                    android:gravity="center"
+                    android:padding="@dimen/spacing_large"
+                    android:layout_marginTop="40dp"
+                    android:visibility="gone"
+                    android:fontFamily="@font/inter_regular" />
+
                 <!-- Bottom spacing for FAB -->
                 <View
                     android:layout_width="match_parent"

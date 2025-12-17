@@ -47,6 +47,7 @@ public class MainActivity extends BaseActivity {
     private TextView tvExpenseThisMonth;
     private TextView tvFilterCategory;
     private ImageView btnFilter;
+    private TextView tvEmptyTransactions;
 
     // Firebase components
     private FirebaseService firebaseService;
@@ -98,6 +99,7 @@ public class MainActivity extends BaseActivity {
         tvExpenseThisMonth = findViewById(R.id.tv_expense_this_month);
         tvFilterCategory = findViewById(R.id.tv_filter_category);
         btnFilter = findViewById(R.id.btn_filter);
+        tvEmptyTransactions = findViewById(R.id.tv_empty_transactions);
 
         transactionItems = new ArrayList<>();
         categoriesMap = new HashMap<>();
@@ -230,7 +232,12 @@ public class MainActivity extends BaseActivity {
 
         if (transactions.isEmpty()) {
             transactionAdapter.updateTransactions(transactionItems);
+            tvEmptyTransactions.setVisibility(View.VISIBLE);
+            rvTransactions.setVisibility(View.GONE);
             return;
+        } else {
+            tvEmptyTransactions.setVisibility(View.GONE);
+            rvTransactions.setVisibility(View.VISIBLE);
         }
 
         // Sort transactions by date (newest first)
