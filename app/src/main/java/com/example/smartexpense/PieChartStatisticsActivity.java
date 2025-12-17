@@ -58,21 +58,29 @@ public class PieChartStatisticsActivity extends BaseActivity {
 
     // Màu sắc cho biểu đồ tròn
     private static final int[] INCOME_COLORS = {
-            Color.rgb(52, 199, 89),    // Xanh lá chính
-            Color.rgb(48, 209, 88),    // Xanh lá sáng
-            Color.rgb(50, 215, 75),    // Xanh lá nhạt
-            Color.rgb(52, 183, 241),   // Xanh dương
-            Color.rgb(94, 92, 230),    // Tím
-            Color.rgb(255, 159, 10),   // Cam
+            Color.rgb(0, 123, 255),    // #007BFF Xanh dương (Blue)
+            Color.rgb(220, 53, 69),    // #DC3545 Đỏ tươi (Red)
+            Color.rgb(255, 193, 7),    // #FFC107 Vàng đậm (Gold)
+            Color.rgb(40, 167, 69),    // #28A745 Xanh lá cây (Green)
+            Color.rgb(253, 126, 20),   // #FD7E14 Cam (Orange)
+            Color.rgb(111, 66, 193),   // #6F42C1 Tím (Purple)
+            Color.rgb(232, 62, 140),   // #E83E8C Hồng cánh sen (Magenta)
+            Color.rgb(32, 201, 151),   // #20C997 Xanh ngọc/Lơ (Teal/Cyan)
+            Color.rgb(121, 85, 72),    // #795548 Nâu (Brown)
+            Color.rgb(52, 58, 64),     // #343A40 Xám đậm (Charcoal)
     };
 
     private static final int[] EXPENSE_COLORS = {
-            Color.rgb(255, 59, 48),    // Đỏ chính
-            Color.rgb(255, 69, 58),    // Đỏ sáng
-            Color.rgb(13, 153, 255),   // Xanh dương
-            Color.rgb(48, 209, 88),    // Xanh lá
-            Color.rgb(175, 82, 222),   // Tím
-            Color.rgb(255, 159, 10),   // Cam
+            Color.rgb(0, 123, 255),    // #007BFF Xanh dương (Blue)
+            Color.rgb(220, 53, 69),    // #DC3545 Đỏ tươi (Red)
+            Color.rgb(255, 193, 7),    // #FFC107 Vàng đậm (Gold)
+            Color.rgb(40, 167, 69),    // #28A745 Xanh lá cây (Green)
+            Color.rgb(253, 126, 20),   // #FD7E14 Cam (Orange)
+            Color.rgb(111, 66, 193),   // #6F42C1 Tím (Purple)
+            Color.rgb(232, 62, 140),   // #E83E8C Hồng cánh sen (Magenta)
+            Color.rgb(32, 201, 151),   // #20C997 Xanh ngọc/Lơ (Teal/Cyan)
+            Color.rgb(121, 85, 72),    // #795548 Nâu (Brown)
+            Color.rgb(52, 58, 64),     // #343A40 Xám đậm (Charcoal)
     };
 
     @Override
@@ -181,7 +189,10 @@ public class PieChartStatisticsActivity extends BaseActivity {
             }
         });
 
-        btnColumnChart.setOnClickListener(v -> finish());
+        btnColumnChart.setOnClickListener(v -> {
+            finish();
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        });
     }
 
     private void updateTypeToggle() {
@@ -199,14 +210,19 @@ public class PieChartStatisticsActivity extends BaseActivity {
     }
 
     private void updateMonthYearDisplay() {
-        SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM", new Locale("vi", "VN"));
-        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", new Locale("vi", "VN"));
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMMM yyyy", new Locale("vi", "VN"));
+        String monthYearText = monthFormat.format(currentMonth.getTime());
 
-        String monthName = monthFormat.format(currentMonth.getTime());
-        String capitalizedMonth = monthName.substring(0, 1).toUpperCase() + monthName.substring(1);
-        String year = yearFormat.format(currentMonth.getTime());
+        // Capitalize first letter
+        String capitalizedText = monthYearText.substring(0, 1).toUpperCase() + monthYearText.substring(1);
 
-        tvMonthYear.setText("Tháng " + capitalizedMonth + "\n" + year);
+        // Split into two lines: month on first line, year on second
+        String[] parts = capitalizedText.split(" ");
+        if (parts.length == 2) {
+            tvMonthYear.setText(parts[0] + "\n" + parts[1]);
+        } else {
+            tvMonthYear.setText(capitalizedText);
+        }
     }
 
     private void loadCategories() {
@@ -256,10 +272,21 @@ public class PieChartStatisticsActivity extends BaseActivity {
     }
 
     private void updateUI() {
-        calculateCategoryStats();
-        updateBalance();
-        updatePieChart();
-        displayCategories();
+        // Add fade out animation
+        categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        pieChart.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+
+        // Update data after a short delay
+        categoriesContainer.postDelayed(() -> {
+            calculateCategoryStats();
+            updateBalance();
+            updatePieChart();
+            displayCategories();
+
+            // Add fade in animation
+            categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+            pieChart.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+        }, 200);
     }
 
     private void calculateCategoryStats() {
@@ -302,6 +329,9 @@ public class PieChartStatisticsActivity extends BaseActivity {
 
         // Sort by amount descending
         categoryStats.sort((a, b) -> Double.compare(b.getAmount(), a.getAmount()));
+
+        // Adjust percentages to ensure they sum to exactly 100%
+        adjustPercentagesToTotal100(categoryStats);
 
         Log.d(TAG, "Created " + categoryStats.size() + " category stats for type: " + currentType);
     }
@@ -388,6 +418,54 @@ public class PieChartStatisticsActivity extends BaseActivity {
         }
 
         Log.d(TAG, "Displayed " + categoriesContainer.getChildCount() + " categories");
+    }
+
+    /**
+     * Adjust percentages to ensure they sum to exactly 100%
+     * Distributes rounding errors to the largest items
+     */
+    private void adjustPercentagesToTotal100(List<CategoryStat> stats) {
+        if (stats.isEmpty()) {
+            return;
+        }
+
+        // Calculate sum of rounded percentages
+        double totalPercentage = 0;
+        for (CategoryStat stat : stats) {
+            totalPercentage += Math.round(stat.getPercentage());
+        }
+
+        // If total is not 100, adjust the largest item(s)
+        int difference = (int) (100 - totalPercentage);
+
+        if (difference != 0 && !stats.isEmpty()) {
+            // Distribute the difference to the largest items
+            int index = 0;
+            while (difference != 0 && index < stats.size()) {
+                CategoryStat stat = stats.get(index);
+                double currentPercentage = stat.getPercentage();
+
+                if (difference > 0) {
+                    // Need to add to reach 100
+                    stat.setPercentage(currentPercentage + 1);
+                    difference--;
+                } else {
+                    // Need to subtract to reach 100
+                    if (currentPercentage > 1) { // Don't make it negative
+                        stat.setPercentage(currentPercentage - 1);
+                        difference++;
+                    }
+                }
+                index++;
+            }
+        }
+
+        // Log for verification
+        double finalTotal = 0;
+        for (CategoryStat stat : stats) {
+            finalTotal += Math.round(stat.getPercentage());
+        }
+        Log.d(TAG, "Adjusted percentages. Final total: " + finalTotal + "%");
     }
 
     private int getIconResource(String iconName) {

@@ -215,7 +215,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|center_horizontal"
         android:contentDescription="@string/add_transaction"
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/primary"
@@ -223,6 +223,7 @@
         app:fabSize="normal"
         app:maxImageSize="32dp"
         app:tint="@color/white" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

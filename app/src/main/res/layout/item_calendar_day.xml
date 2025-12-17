@@ -2,17 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/dayContainer"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="80dp"
     android:orientation="vertical"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     android:clickable="true"
     android:focusable="true"
     android:background="?android:attr/selectableItemBackground"
-    android:padding="4dp">
+    android:padding="2dp">
 
     <FrameLayout
-        android:layout_width="40dp"
-        android:layout_height="40dp">
+        android:layout_width="32dp"
+        android:layout_height="32dp">
 
         <TextView
             android:id="@+id/tvDay"
@@ -20,23 +20,40 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="1"
-            android:textSize="14sp"
+            android:textSize="13sp"
             android:textColor="@color/text_primary"
             android:fontFamily="@font/inter_medium"
             android:background="@drawable/bg_calendar_day_selector" />
 
     </FrameLayout>
 
+    <!-- Thu nhập -->
     <TextView
-        android:id="@+id/tvAmount"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvIncome"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="655,566"
-        android:textSize="9sp"
+        android:text="+100K"
+        android:textSize="8sp"
         android:textColor="@color/income"
         android:fontFamily="@font/inter_regular"
         android:visibility="gone"
+        android:gravity="center"
         android:layout_marginTop="2dp"
+        android:maxLines="1"
+        android:ellipsize="end" />
+
+    <!-- Chi tiêu -->
+    <TextView
+        android:id="@+id/tvExpense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="-50K"
+        android:textSize="8sp"
+        android:textColor="@color/expense"
+        android:fontFamily="@font/inter_regular"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_marginTop="1dp"
         android:maxLines="1"
         android:ellipsize="end" />
 

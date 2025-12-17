@@ -12,7 +12,7 @@
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <solid android:color="@color/primary" />
+                <solid android:color="@color/expense" />
                 <corners android:radius="3dp" />
             </shape>
         </clip>

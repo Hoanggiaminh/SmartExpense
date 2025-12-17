@@ -110,12 +110,23 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         // FAB navigates based on selected card
         fabAdd.setOnClickListener(v -> {
+            // Get selected date from intent (if coming from calendar)
+            long selectedDate = getIntent().getLongExtra("selected_date", -1);
+
             if (selectedTransactionType == 0) {
                 // Navigate to Add Income
-                startActivity(new Intent(this, AddIncomeActivity.class));
+                Intent intent = new Intent(this, AddIncomeActivity.class);
+                if (selectedDate != -1) {
+                    intent.putExtra("selected_date", selectedDate);
+                }
+                startActivity(intent);
             } else {
                 // Navigate to Add Expense
-                startActivity(new Intent(this, AddExpenseActivity.class));
+                Intent intent = new Intent(this, AddExpenseActivity.class);
+                if (selectedDate != -1) {
+                    intent.putExtra("selected_date", selectedDate);
+                }
+                startActivity(intent);
             }
         });
     }

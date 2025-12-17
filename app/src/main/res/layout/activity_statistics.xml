@@ -186,6 +186,8 @@
                     </LinearLayout>
 
                     <!-- Bar Chart -->
+
+                    <!-- Date Range -->
                     <HorizontalScrollView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -195,14 +197,13 @@
                             android:id="@+id/chartContainer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:gravity="bottom"
-                            android:paddingVertical="8dp"
-                            android:minHeight="200dp" />
+                            android:minHeight="200dp"
+                            android:orientation="horizontal"
+                            android:paddingVertical="8dp" />
 
                     </HorizontalScrollView>
 
-                    <!-- Date Range -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

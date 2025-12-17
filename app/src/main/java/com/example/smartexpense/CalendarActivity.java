@@ -13,13 +13,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.smartexpense.model.DayAmount;
 import com.example.smartexpense.services.FirebaseService;
 import com.example.smartexpense.utils.CurrencyUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,7 +41,7 @@ public class CalendarActivity extends BaseActivity {
     private CalendarDayAdapter calendarAdapter;
     private Calendar currentMonth;
     private FirebaseService firebaseService;
-    private Map<String, Double> dayAmounts = new HashMap<>();
+    private Map<String, DayAmount> dayAmounts = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +138,7 @@ public class CalendarActivity extends BaseActivity {
     }
 
     private void updateMonthYearDisplay() {
-        SimpleDateFormat sdf = new SimpleDateFormat("'Tháng' MMMM yyyy", new Locale("vi", "VN"));
+        SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", new Locale("vi", "VN"));
         tvMonthYear.setText(sdf.format(currentMonth.getTime()));
     }
 
@@ -179,7 +178,7 @@ public class CalendarActivity extends BaseActivity {
                                 totals[1] += amount;
                             }
 
-                            // Track daily amounts
+                            // Track daily amounts - separate income and expense
                             Calendar cal = Calendar.getInstance();
                             cal.setTime(date.toDate());
                             String dateKey = String.format(Locale.US, "%04d-%02d-%02d",
@@ -187,13 +186,19 @@ public class CalendarActivity extends BaseActivity {
                                     cal.get(Calendar.MONTH) + 1,
                                     cal.get(Calendar.DAY_OF_MONTH));
 
-                            double dailyBalance = dayAmounts.getOrDefault(dateKey, 0.0);
-                            if ("income".equals(type)) {
-                                dailyBalance += amount;
-                            } else {
-                                dailyBalance -= amount;
+                            // Get or create DayAmount for this date
+                            DayAmount dayAmount = dayAmounts.get(dateKey);
+                            if (dayAmount == null) {
+                                dayAmount = new DayAmount();
+                                dayAmounts.put(dateKey, dayAmount);
                             }
-                            dayAmounts.put(dateKey, dailyBalance);
+
+                            // Add to appropriate total
+                            if ("income".equals(type)) {
+                                dayAmount.addIncome(amount);
+                            } else if ("expense".equals(type)) {
+                                dayAmount.addExpense(amount);
+                            }
                         }
                     });
 
@@ -236,7 +241,7 @@ public class CalendarActivity extends BaseActivity {
     }
 
     private void onDaySelected(Calendar selectedDate) {
-        // Navigate to DayDetailActivity
+        // Navigate to DayDetailActivity to view transactions for that day
         Intent intent = new Intent(CalendarActivity.this, DayDetailActivity.class);
         intent.putExtra("selected_date", selectedDate.getTimeInMillis());
         startActivity(intent);

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smartexpense.model.DayAmount;
 import com.example.smartexpense.utils.CurrencyUtils;
 
 import java.util.Calendar;
@@ -24,7 +25,7 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayAdapter.
     private final Context context;
     private final OnDateSelectedListener listener;
     private int selectedPosition = -1;
-    private Map<String, Double> dayAmounts = new HashMap<>();
+    private Map<String, DayAmount> dayAmounts = new HashMap<>();
 
     public interface OnDateSelectedListener {
         void onDateSelected(Calendar date);
@@ -54,7 +55,8 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayAdapter.
         // Reset styles first
         holder.tvDay.setBackgroundResource(0); // Clear background
         holder.tvDay.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.text_primary));
-        holder.tvAmount.setVisibility(View.GONE);
+        holder.tvIncome.setVisibility(View.GONE);
+        holder.tvExpense.setVisibility(View.GONE);
 
         // Handle previous month days (grayed out)
         if (day.isFromPreviousMonth()) {
@@ -72,19 +74,21 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayAdapter.
             holder.itemView.setEnabled(true);
             holder.itemView.setClickable(true);
             
-            // Show amount if available
+            // Show income and expense if available
             String dateKey = getDateKey(day.getDate());
             if (dayAmounts.containsKey(dateKey)) {
-                Double amount = dayAmounts.get(dateKey);
-                if (amount != null && amount != 0) {
-                    holder.tvAmount.setVisibility(View.VISIBLE);
-                    holder.tvAmount.setText(CurrencyUtils.formatNumber(Math.abs(amount)));
+                DayAmount dayAmount = dayAmounts.get(dateKey);
+                if (dayAmount != null && dayAmount.hasTransactions()) {
+                    // Show income if > 0
+                    if (dayAmount.getIncome() > 0) {
+                        holder.tvIncome.setVisibility(View.VISIBLE);
+                        holder.tvIncome.setText("+" + CurrencyUtils.formatNumber(dayAmount.getIncome()));
+                    }
 
-                    // Set color based on positive/negative
-                    if (amount > 0) {
-                        holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.income));
-                    } else {
-                        holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.expense));
+                    // Show expense if > 0
+                    if (dayAmount.getExpense() > 0) {
+                        holder.tvExpense.setVisibility(View.VISIBLE);
+                        holder.tvExpense.setText("-" + CurrencyUtils.formatNumber(dayAmount.getExpense()));
                     }
                 }
             }
@@ -146,7 +150,7 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayAdapter.
         notifyDataSetChanged();
     }
 
-    public void setDayAmounts(Map<String, Double> amounts) {
+    public void setDayAmounts(Map<String, DayAmount> amounts) {
         this.dayAmounts = amounts;
         notifyDataSetChanged();
     }
@@ -177,13 +181,15 @@ public class CalendarDayAdapter extends RecyclerView.Adapter<CalendarDayAdapter.
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvDay;
-        TextView tvAmount;
+        TextView tvIncome;
+        TextView tvExpense;
         LinearLayout dayContainer;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvDay = itemView.findViewById(R.id.tvDay);
-            tvAmount = itemView.findViewById(R.id.tvAmount);
+            tvIncome = itemView.findViewById(R.id.tvIncome);
+            tvExpense = itemView.findViewById(R.id.tvExpense);
             dayContainer = itemView.findViewById(R.id.dayContainer);
         }
     }

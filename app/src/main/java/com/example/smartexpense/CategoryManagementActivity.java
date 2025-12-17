@@ -32,14 +32,15 @@ public class CategoryManagementActivity extends AppCompatActivity {
         categoryItems = new ArrayList<>();
 
         initViews();
-        setupRecyclerView();
+        setupRecyclerViews();
         loadCategories();
         setupClickListeners();
     }
 
     private void initViews() {
         btnBack = findViewById(R.id.btnBack);
-        rvCategories = findViewById(R.id.rvCategories);
+        rvExpenseCategories = findViewById(R.id.rvExpenseCategories);
+        rvIncomeCategories = findViewById(R.id.rvIncomeCategories);
     }
 
     private void setupRecyclerView() {

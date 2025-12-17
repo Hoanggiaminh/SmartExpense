@@ -123,6 +123,7 @@ public class StatisticsActivity extends BaseActivity {
             Intent intent = new Intent(StatisticsActivity.this, PieChartStatisticsActivity.class);
             intent.putExtra("selectedTab", 2);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         });
     }
 
@@ -169,17 +170,13 @@ public class StatisticsActivity extends BaseActivity {
                         }
                     }
 
-                    // Update UI
-                    updateBalance();
-                    updateChart();
-                    updateCategoryStats();
+                    // Update UI with animation
+                    updateUIWithAnimation();
                 })
                 .addOnFailureListener(e -> {
                     // Handle error
                     weekTransactions = new ArrayList<>();
-                    updateBalance();
-                    updateChart();
-                    updateCategoryStats();
+                    updateUIWithAnimation();
                 });
     }
 
@@ -206,6 +203,31 @@ public class StatisticsActivity extends BaseActivity {
         } else {
             tvBalance.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
         }
+    }
+
+    private void updateUIWithAnimation() {
+        // Add fade out animation
+        if (chartContainer != null) {
+            chartContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        }
+        if (categoriesContainer != null) {
+            categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_out));
+        }
+
+        // Update data after a short delay
+        chartContainer.postDelayed(() -> {
+            updateBalance();
+            updateChart();
+            updateCategoryStats();
+
+            // Add fade in animation
+            if (chartContainer != null) {
+                chartContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+            }
+            if (categoriesContainer != null) {
+                categoriesContainer.startAnimation(android.view.animation.AnimationUtils.loadAnimation(this, R.anim.fade_in));
+            }
+        }, 200);
     }
 
     private void updateChart() {
@@ -309,7 +331,7 @@ public class StatisticsActivity extends BaseActivity {
         );
         expenseParams.setMargins(dpToPx(2), 0, 0, 0);
         expenseBar.setLayoutParams(expenseParams);
-        expenseBar.setBackgroundColor(ContextCompat.getColor(this, R.color.primary));
+        expenseBar.setBackgroundColor(ContextCompat.getColor(this, R.color.expense));
 
         barContainer.addView(incomeBar);
         barContainer.addView(expenseBar);
@@ -399,6 +421,10 @@ public class StatisticsActivity extends BaseActivity {
         Log.d("StatisticsActivity", "Total Expense: " + totalExpense);
         Log.d("StatisticsActivity", "Category-Type combinations: " + categoryTypeAmounts.size());
 
+        // Separate lists for income and expense stats
+        List<CategoryStat> incomeStats = new ArrayList<>();
+        List<CategoryStat> expenseStats = new ArrayList<>();
+
         // Create CategoryStat objects for all category-type combinations
         for (Map.Entry<String, Double> entry : categoryTypeAmounts.entrySet()) {
             String key = entry.getKey();
@@ -444,8 +470,22 @@ public class StatisticsActivity extends BaseActivity {
                     amount,
                     percentage
             );
-            categoryStats.add(stat);
+
+            // Add to appropriate list
+            if ("income".equals(transactionType)) {
+                incomeStats.add(stat);
+            } else if ("expense".equals(transactionType)) {
+                expenseStats.add(stat);
+            }
         }
+
+        // Adjust percentages to ensure they sum to 100% for each type
+        adjustPercentagesToTotal100(incomeStats);
+        adjustPercentagesToTotal100(expenseStats);
+
+        // Combine back into categoryStats
+        categoryStats.addAll(incomeStats);
+        categoryStats.addAll(expenseStats);
 
         Log.d("StatisticsActivity", "Total CategoryStats created: " + categoryStats.size());
 
@@ -496,6 +536,57 @@ public class StatisticsActivity extends BaseActivity {
         }
 
         Log.d("StatisticsActivity", "Total views added: " + categoriesContainer.getChildCount());
+    }
+
+    /**
+     * Adjust percentages to ensure they sum to exactly 100%
+     * Distributes rounding errors to the largest items
+     */
+    private void adjustPercentagesToTotal100(List<CategoryStat> stats) {
+        if (stats.isEmpty()) {
+            return;
+        }
+
+        // Sort by amount descending for consistent rounding distribution
+        stats.sort((a, b) -> Double.compare(b.getAmount(), a.getAmount()));
+
+        // Calculate sum of rounded percentages
+        double totalPercentage = 0;
+        for (CategoryStat stat : stats) {
+            totalPercentage += Math.round(stat.getPercentage());
+        }
+
+        // If total is not 100, adjust the largest item(s)
+        int difference = (int) (100 - totalPercentage);
+
+        if (difference != 0 && !stats.isEmpty()) {
+            // Distribute the difference to the largest items
+            int index = 0;
+            while (difference != 0 && index < stats.size()) {
+                CategoryStat stat = stats.get(index);
+                double currentPercentage = stat.getPercentage();
+
+                if (difference > 0) {
+                    // Need to add to reach 100
+                    stat.setPercentage(currentPercentage + 1);
+                    difference--;
+                } else {
+                    // Need to subtract to reach 100
+                    if (currentPercentage > 1) { // Don't make it negative
+                        stat.setPercentage(currentPercentage - 1);
+                        difference++;
+                    }
+                }
+                index++;
+            }
+        }
+
+        // Log for verification
+        double finalTotal = 0;
+        for (CategoryStat stat : stats) {
+            finalTotal += Math.round(stat.getPercentage());
+        }
+        Log.d("StatisticsActivity", "Adjusted percentages. Final total: " + finalTotal + "%");
     }
 
     private int getIconResource(String iconName) {
