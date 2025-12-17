@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5"
+    android:background="#FFF"
     android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-
 
         <ScrollView
             android:layout_width="match_parent"
@@ -88,7 +86,6 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
-                <!-- Menu Items Container -->
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,42 +100,6 @@
                         android:orientation="vertical"
                         android:divider="@drawable/divider"
                         android:showDividers="middle">
-
-                        <!-- Đơn vị tiền tệ -->
-                        <LinearLayout
-                            android:id="@+id/btnFinancialSettings"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:padding="16dp"
-                            android:background="?attr/selectableItemBackground"
-                            android:clickable="true"
-                            android:focusable="true">
-
-                            <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
-                                android:src="@drawable/ic_wallet"
-                                app:tint="@color/text_secondary" />
-
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_weight="1"
-                                android:text="Đơn vị tiền tệ"
-                                android:textColor="@color/text_primary"
-                                android:fontFamily="@font/inter_medium"
-                                android:textSize="16sp" />
-
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:src="@drawable/ic_chevron_right"
-                                app:tint="@color/text_secondary" />
-
-                        </LinearLayout>
 
                         <!-- Quản lý danh mục -->
                         <LinearLayout
@@ -176,26 +137,6 @@
 
                         </LinearLayout>
 
-                    </LinearLayout>
-
-                </com.google.android.material.card.MaterialCardView>
-
-                <!-- Logout and Delete Account Container -->
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:cardCornerRadius="12dp"
-                    app:cardElevation="2dp"
-                    app:cardBackgroundColor="@color/white">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:divider="@drawable/divider"
-                        android:showDividers="middle">
-
                         <!-- Đăng xuất -->
                         <LinearLayout
                             android:id="@+id/btnLogout"
@@ -212,7 +153,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/ic_logout"
-                                app:tint="@color/primary" />
+                                app:tint="@color/text_secondary" />
 
                             <TextView
                                 android:layout_width="wrap_content"

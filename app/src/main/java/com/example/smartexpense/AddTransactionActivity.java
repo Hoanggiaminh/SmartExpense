@@ -252,31 +252,36 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         cal.setTime(date);
 
-        // Check if it's today
         if (isSameDay(cal, today)) {
             return "Hôm nay";
         }
 
-        // Check if it's yesterday
         if (isSameDay(cal, yesterday)) {
             return "Hôm qua";
         }
 
-        // Check if it's within this week
-        long diffInDays = (today.getTimeInMillis() - cal.getTimeInMillis()) / (1000 * 60 * 60 * 24);
-        if (diffInDays <= 7) {
-            SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE", new Locale("vi", "VN"));
+        // Chỉ hiển thị Thứ nếu cùng tuần
+        if (isSameWeek(cal, today)) {
+            SimpleDateFormat dayFormat =
+                    new SimpleDateFormat("EEEE", new Locale("vi", "VN"));
             return dayFormat.format(date);
         }
 
-        // Show full date for older transactions
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd/MM", new Locale("vi", "VN"));
+        // Ngày cũ
+        SimpleDateFormat dateFormat =
+                new SimpleDateFormat("dd/MM/yyyy", new Locale("vi", "VN"));
         return dateFormat.format(date);
     }
+
 
     private boolean isSameDay(Calendar cal1, Calendar cal2) {
         return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR) &&
                 cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+    }
+
+    private boolean isSameWeek(Calendar c1, Calendar c2) {
+        return c1.get(Calendar.WEEK_OF_YEAR) == c2.get(Calendar.WEEK_OF_YEAR)
+                && c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR);
     }
 
     @Override

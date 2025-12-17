@@ -11,7 +11,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 import com.google.firebase.Timestamp;
 import android.util.Log;
 
@@ -348,6 +350,30 @@ public class FirebaseService {
                 .add(category);
     }
 
+    // Delete user category
+    public Task<Void> deleteCategory(String categoryId) {
+        String userId = getCurrentUserId();
+        if (userId == null) return null;
+
+        return db.collection("users")
+                .document(userId)
+                .collection("categories")
+                .document(categoryId)
+                .delete();
+    }
+
+    // Update user category
+    public Task<Void> updateCategory(String categoryId, Category category) {
+        String userId = getCurrentUserId();
+        if (userId == null) return null;
+
+        return db.collection("users")
+                .document(userId)
+                .collection("categories")
+                .document(categoryId)
+                .set(category);
+    }
+
     // Tạo danh mục mặc định
     public void createDefaultCategories() {
         // Default income categories
@@ -423,6 +449,116 @@ public class FirebaseService {
 
                     Log.d("FirebaseService", "Total categories loaded: " + allCategories.size());
                     return allCategories;
+                });
+    }
+
+    // Delete user category and move transactions to "Khác" category
+    public Task<Void> deleteCategoryAndMoveTransactions(Category categoryToDelete) {
+        String userId = getCurrentUserId();
+        if (userId == null) return Tasks.forException(new Exception("User not logged in"));
+
+        // First, find the appropriate "Khác" category based on the type
+        String targetCategoryName = categoryToDelete.getType().equals("income") ? "Khác (thu)" : "Khác (chi)";
+
+        return getCategoriesByType(categoryToDelete.getType())
+            .continueWithTask(task -> {
+                if (!task.isSuccessful()) {
+                    throw task.getException();
+                }
+
+                List<Category> categories = task.getResult();
+                Category targetCategory = null;
+
+                // Find the "Khác" category
+                for (Category category : categories) {
+                    if (category.getName().equals(targetCategoryName)) {
+                        targetCategory = category;
+                        break;
+                    }
+                }
+
+                if (targetCategory == null) {
+                    throw new Exception("Không tìm thấy danh mục " + targetCategoryName);
+                }
+
+                final Category finalTargetCategory = targetCategory;
+
+                // Get all transactions with the category to be deleted
+                return db.collection("users")
+                    .document(userId)
+                    .collection("transactions")
+                    .whereEqualTo("categoryId", categoryToDelete.getId())
+                    .get()
+                    .continueWithTask(transactionsTask -> {
+                        if (!transactionsTask.isSuccessful()) {
+                            throw transactionsTask.getException();
+                        }
+
+                        QuerySnapshot transactionsSnapshot = transactionsTask.getResult();
+                        WriteBatch batch = db.batch();
+
+                        // Update all transactions to use the target category
+                        for (QueryDocumentSnapshot doc : transactionsSnapshot) {
+                            DocumentReference transactionRef = db.collection("users")
+                                .document(userId)
+                                .collection("transactions")
+                                .document(doc.getId());
+
+                            batch.update(transactionRef, "categoryId", finalTargetCategory.getId());
+                            batch.update(transactionRef, "categoryName", finalTargetCategory.getName());
+                        }
+
+                        // Delete the category
+                        DocumentReference categoryRef = db.collection("users")
+                            .document(userId)
+                            .collection("categories")
+                            .document(categoryToDelete.getId());
+                        batch.delete(categoryRef);
+
+                        // Commit all changes
+                        return batch.commit();
+                    });
+            });
+    }
+
+    // Method to delete all user data from Firestore
+    public Task<Void> deleteUserData(String userId) {
+        WriteBatch batch = db.batch();
+
+        // Delete user document and all subcollections
+        DocumentReference userDoc = db.collection("users").document(userId);
+
+        // Get and delete all transactions
+        Task<QuerySnapshot> transactionsTask = db.collection("users")
+                .document(userId)
+                .collection("transactions")
+                .get();
+
+        // Get and delete all categories
+        Task<QuerySnapshot> categoriesTask = db.collection("users")
+                .document(userId)
+                .collection("categories")
+                .get();
+
+        return Tasks.whenAllSuccess(transactionsTask, categoriesTask)
+                .continueWithTask(task -> {
+                    // Delete all transactions
+                    QuerySnapshot transactionsResult = (QuerySnapshot) task.getResult().get(0);
+                    for (DocumentSnapshot doc : transactionsResult) {
+                        batch.delete(doc.getReference());
+                    }
+
+                    // Delete all categories
+                    QuerySnapshot categoriesResult = (QuerySnapshot) task.getResult().get(1);
+                    for (DocumentSnapshot doc : categoriesResult) {
+                        batch.delete(doc.getReference());
+                    }
+
+                    // Delete user document
+                    batch.delete(userDoc);
+
+                    // Commit the batch
+                    return batch.commit();
                 });
     }
 
