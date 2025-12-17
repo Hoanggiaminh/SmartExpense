@@ -407,12 +407,21 @@ public class PieChartStatisticsActivity extends BaseActivity {
             int iconRes = getIconResource(stat.getIcon());
             ivIcon.setImageResource(iconRes);
 
-            // Set color based on type
+            // Get color for this category from the color arrays (matching pie chart colors)
             int colorIndex = i % ("income".equals(currentType) ? INCOME_COLORS.length : EXPENSE_COLORS.length);
-            int color = "income".equals(currentType) ? INCOME_COLORS[colorIndex] : EXPENSE_COLORS[colorIndex];
+            int categoryColor = "income".equals(currentType) ? INCOME_COLORS[colorIndex] : EXPENSE_COLORS[colorIndex];
 
-            progressBar.getProgressDrawable().setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
-            tvAmount.setTextColor(color);
+            // Create a custom progress drawable with the category's color
+            android.graphics.drawable.LayerDrawable progressDrawable = (android.graphics.drawable.LayerDrawable)
+                ContextCompat.getDrawable(this, R.drawable.progress_category_income).mutate();
+            android.graphics.drawable.Drawable progressLayer = progressDrawable.findDrawableByLayerId(android.R.id.progress);
+            if (progressLayer != null) {
+                progressLayer.setColorFilter(categoryColor, android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+            progressBar.setProgressDrawable(progressDrawable);
+
+            // Set amount text color to match the category color
+            tvAmount.setTextColor(categoryColor);
 
             categoriesContainer.addView(itemView);
         }
