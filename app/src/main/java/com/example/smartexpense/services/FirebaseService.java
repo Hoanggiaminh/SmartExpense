@@ -524,22 +524,22 @@ public class FirebaseService {
     // Method to delete all user data from Firestore
     public Task<Void> deleteUserData(String userId) {
         WriteBatch batch = db.batch();
-
+        
         // Delete user document and all subcollections
         DocumentReference userDoc = db.collection("users").document(userId);
-
+        
         // Get and delete all transactions
         Task<QuerySnapshot> transactionsTask = db.collection("users")
                 .document(userId)
                 .collection("transactions")
                 .get();
-
+        
         // Get and delete all categories
         Task<QuerySnapshot> categoriesTask = db.collection("users")
                 .document(userId)
                 .collection("categories")
                 .get();
-
+        
         return Tasks.whenAllSuccess(transactionsTask, categoriesTask)
                 .continueWithTask(task -> {
                     // Delete all transactions
@@ -547,16 +547,16 @@ public class FirebaseService {
                     for (DocumentSnapshot doc : transactionsResult) {
                         batch.delete(doc.getReference());
                     }
-
+                    
                     // Delete all categories
                     QuerySnapshot categoriesResult = (QuerySnapshot) task.getResult().get(1);
                     for (DocumentSnapshot doc : categoriesResult) {
                         batch.delete(doc.getReference());
                     }
-
+                    
                     // Delete user document
                     batch.delete(userDoc);
-
+                    
                     // Commit the batch
                     return batch.commit();
                 });
